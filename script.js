@@ -65,3 +65,187 @@ window.addEventListener('scroll', () => {
     
     lastScroll = currentScroll;
 });
+
+// Theme switcher functionality
+const themeToggle = document.getElementById('theme-toggle');
+const root = document.documentElement;
+
+// Check for saved theme preference
+const savedTheme = localStorage.getItem('theme');
+if (savedTheme) {
+    root.setAttribute('data-theme', savedTheme);
+    themeToggle.checked = savedTheme === 'light';
+}
+
+// Handle theme switch
+themeToggle.addEventListener('change', () => {
+    const theme = themeToggle.checked ? 'light' : 'dark';
+    root.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+});
+
+// Animate skill bars when they come into view
+const skillBars = document.querySelectorAll('.progress-bar');
+const skillObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            const percent = entry.target.dataset.percent;
+            entry.target.style.setProperty('--percent', `${percent}%`);
+            skillObserver.unobserve(entry.target);
+        }
+    });
+}, { threshold: 0.5 });
+
+skillBars.forEach(bar => skillObserver.observe(bar));
+
+// Skills data - Easy to maintain and update
+const skills = [
+    { name: 'HTML & CSS', rating: 3 },
+    { name: 'JavaScript', rating: 3.5 },
+    { name: 'PHP', rating: 4 },
+    { name: 'Python', rating: 4 },
+    { name: 'C#', rating: 4 },
+    { name: 'C++', rating: 3 },
+];
+
+// Function to generate star HTML based on rating
+function generateStars(rating) {
+    const fullStars = Math.floor(rating);
+    const hasHalfStar = rating % 1 !== 0;
+    const emptyStars = 5 - Math.ceil(rating);
+    
+    let starsHTML = '';
+    
+    // Add full stars
+    for (let i = 0; i < fullStars; i++) {
+        starsHTML += '<i class="fas fa-star"></i>';
+    }
+    
+    // Add half star if needed
+    if (hasHalfStar) {
+        starsHTML += '<i class="fas fa-star-half-alt"></i>';
+    }
+    
+    // Add empty stars
+    for (let i = 0; i < emptyStars; i++) {
+        starsHTML += '<i class="far fa-star"></i>';
+    }
+    
+    return starsHTML;
+}
+
+// Function to render skills
+function renderSkills() {
+    const skillsWrapper = document.getElementById('skills-wrapper');
+    if (!skillsWrapper) return;
+
+    skillsWrapper.innerHTML = skills.map((skill, index) => `
+        <div class="skill-tag" style="--i: ${index}">
+            <span class="skill-name">${skill.name}</span>
+            <div class="stars">
+                ${generateStars(skill.rating)}
+            </div>
+        </div>
+    `).join('');
+}
+
+// Mouse tracking for hobby cards
+document.addEventListener('DOMContentLoaded', () => {
+    const cards = document.querySelectorAll('.hobby-card');
+    
+    cards.forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = ((e.clientX - rect.left) / card.clientWidth) * 100;
+            const y = ((e.clientY - rect.top) / card.clientHeight) * 100;
+            
+            card.style.setProperty('--mouse-x', `${x}%`);
+            card.style.setProperty('--mouse-y', `${y}%`);
+            
+            // Calculate tilt based on mouse position
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            const rotateY = ((e.clientX - rect.left) - centerX) / 20;
+            const rotateX = (centerY - (e.clientY - rect.top)) / 20;
+            
+            card.style.transform = `translateY(-10px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+        });
+        
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = 'translateY(0) rotateX(0) rotateY(0)';
+        });
+    });
+
+    renderSkills();
+});
+
+// Back to top button functionality
+const backToTopButton = document.getElementById('back-to-top');
+
+// Show button when scrolling down
+window.addEventListener('scroll', () => {
+    if (window.scrollY > 300) {
+        backToTopButton.classList.add('visible');
+    } else {
+        backToTopButton.classList.remove('visible');
+    }
+});
+
+// Smooth scroll to top when clicked
+backToTopButton.addEventListener('click', () => {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+});
+
+// Contact form handling
+const contactForm = document.getElementById('contact-form');
+
+if (contactForm) {
+    contactForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        // Get form data
+        const formData = new FormData(contactForm);
+        const data = Object.fromEntries(formData);
+        
+        // Create loading state
+        const submitBtn = contactForm.querySelector('.submit-btn');
+        const originalBtnText = submitBtn.innerHTML;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+        submitBtn.disabled = true;
+
+        // Simulate sending (replace this with your actual form handling)
+        try {
+            // Simulate API call
+            await new Promise(resolve => setTimeout(resolve, 1500));
+            
+            // Show success message
+            submitBtn.innerHTML = '<i class="fas fa-check"></i> Sent!';
+            submitBtn.style.backgroundColor = '#4CAF50';
+            
+            // Reset form
+            contactForm.reset();
+            
+            // Reset button after 2 seconds
+            setTimeout(() => {
+                submitBtn.innerHTML = originalBtnText;
+                submitBtn.style.backgroundColor = '';
+                submitBtn.disabled = false;
+            }, 2000);
+            
+        } catch (error) {
+            // Show error state
+            submitBtn.innerHTML = '<i class="fas fa-exclamation-circle"></i> Error';
+            submitBtn.style.backgroundColor = '#f44336';
+            
+            // Reset button after 2 seconds
+            setTimeout(() => {
+                submitBtn.innerHTML = originalBtnText;
+                submitBtn.style.backgroundColor = '';
+                submitBtn.disabled = false;
+            }, 2000);
+        }
+    });
+}

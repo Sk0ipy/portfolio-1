@@ -8,6 +8,13 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
+    <div class="theme-switch">
+        <input type="checkbox" id="theme-toggle">
+        <label for="theme-toggle" class="switch">
+            <i class="fas fa-sun"></i>
+            <i class="fas fa-moon"></i>
+        </label>
+    </div>
     <nav class="navbar">
         <div class="nav-content">
             <div class="logo">Owen Samson</div>
@@ -18,6 +25,7 @@
                 <li><a href="#hobbies">Hobbies & Sports</a></li>
                 <li><a href="#projects">Projects</a></li>
                 <li><a href="#internship">Internship</a></li>
+                <li><a href="#contact">Contact</a></li>
             </ul>
             <div class="hamburger">
                 <span></span>
@@ -29,17 +37,17 @@
 
     <section id="home" class="section">
         <div class="container fade-in">
-            <h1>Welcome to My Portfolio</h1>
-            <p class="tagline">Web Developer & Designer</p>
-            <a href="#" class="cta-button" download>Download CV</a>
+            <h1 class="animate">Welcome to My Portfolio</h1>
+            <p class="tagline animate animate-delay-1">Web Developer & Designer</p>
+            <a href="#" class="cta-button animate animate-delay-2" download>Download CV</a>
         </div>
     </section>
 
     <section id="about" class="section">
         <div class="container fade-in">
-            <h2>About Me</h2>
+            <h2 class="animate">About Me</h2>
             <div class="about-content">
-                <div class="about-text">
+                <div class="about-text animate animate-delay-1">
                     <p>My name is Owen Samson, a 22-year-old software developer with a passion for cybersecurity. I currently work as a store manager and run my own second-hand clothing business. Besides my work and studies, you'll find me at the gym four times a week—I believe in staying strong both physically and mentally.</p>
                     
                     <p>What drives me is my analytical mindset and my ability not only to identify problems but also to pinpoint their root causes and find efficient solutions. I never give up, no matter how complex the challenge. That's why I want to specialize further in cybersecurity, with the ultimate goal of starting my own cybersecurity company. My mission is to help businesses secure their systems as effectively as possible.</p>
@@ -54,7 +62,7 @@
 
     <section id="education" class="section">
         <div class="container fade-in">
-            <h2>Education & Work</h2>
+            <h2 class="animate">Education & Work</h2>
             <div class="timeline">
                 <div class="timeline-item">
                     <div class="date">2019 - Present</div>
@@ -98,24 +106,24 @@
 
     <section id="hobbies" class="section">
         <div class="container fade-in">
-            <h2>Hobbies & Sports</h2>
+            <h2 class="animate">Hobbies & Sports</h2>
             <div class="hobbies-grid">
-                <div class="hobby-card">
+                <div class="hobby-card animate animate-delay-1">
                     <i class="fas fa-code"></i>
                     <h3>Coding</h3>
                     <span class="tooltip">Passionate about cybersecurity and software development. Always learning new technologies and security practices.</span>
                 </div>
-                <div class="hobby-card">
+                <div class="hobby-card animate animate-delay-2">
                     <i class="fas fa-dumbbell"></i>
                     <h3>Weight Training</h3>
                     <span class="tooltip">Dedicated to fitness and strength training. Hit the gym four times a week to maintain physical and mental strength.</span>
                 </div>
-                <div class="hobby-card">
+                <div class="hobby-card animate animate-delay-3">
                     <i class="fas fa-camera"></i>
                     <h3>Photography</h3>
                     <span class="tooltip">Capturing moments and expressing creativity through the lens. Love exploring different photography styles and techniques.</span>
                 </div>
-                <div class="hobby-card">
+                <div class="hobby-card animate animate-delay-4">
                     <i class="fas fa-baseball-ball"></i>
                     <h3>Baseball</h3>
                     <span class="tooltip">Used to play baseball for 10 years. Currently taking a break to work on personal projects.</span>
@@ -124,21 +132,30 @@
         </div>
     </section>
 
+    <section id="skills" class="section">
+        <div class="container fade-in">
+            <h2 class="animate">Technical Skills</h2>
+            <div id="skills-wrapper" class="skills-wrapper animate animate-delay-1">
+                <!-- Skills will be dynamically inserted here -->
+            </div>
+        </div>
+    </section>
+
     <section id="projects" class="section">
         <div class="container fade-in">
-            <h2>Projects</h2>
+            <h2 class="animate">My Projects</h2>
             <div class="projects-grid">
-                <div class="project-card">
+                <div class="project-card animate animate-delay-1">
                     <h3>Project 1</h3>
                     <p>Description of project 1</p>
                     <a href="#" class="project-link">View Project</a>
                 </div>
-                <div class="project-card">
+                <div class="project-card animate animate-delay-2">
                     <h3>Project 2</h3>
                     <p>Description of project 2</p>
                     <a href="#" class="project-link">View Project</a>
                 </div>
-                <div class="project-card">
+                <div class="project-card animate animate-delay-3">
                     <h3>Project 3</h3>
                     <p>Description of project 3</p>
                     <a href="#" class="project-link">View Project</a>
@@ -147,11 +164,63 @@
         </div>
     </section>
 
+    <section id="contact" class="section">
+        <div class="container fade-in">
+            <h2 class="animate">Get In Touch</h2>
+            <div class="contact-wrapper animate animate-delay-1">
+                <div class="contact-info">
+                    <h3>Let's Connect!</h3>
+                    <p>Feel free to reach out for collaborations or just a friendly chat.</p>
+                    <div class="social-links">
+                        <a href="https://github.com/yourusername" target="_blank" class="social-link">
+                            <i class="fab fa-github"></i>
+                            <span>GitHub</span>
+                        </a>
+                        <a href="https://linkedin.com/in/yourusername" target="_blank" class="social-link">
+                            <i class="fab fa-linkedin"></i>
+                            <span>LinkedIn</span>
+                        </a>
+                        <a href="mailto:your.email@example.com" class="social-link">
+                            <i class="fas fa-envelope"></i>
+                            <span>Email</span>
+                        </a>
+                    </div>
+                </div>
+                <form id="contact-form" class="contact-form">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" name="name" required>
+                        <div class="focus-border"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required>
+                        <div class="focus-border"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="subject">Subject</label>
+                        <input type="text" id="subject" name="subject" required>
+                        <div class="focus-border"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" name="message" rows="5" required></textarea>
+                        <div class="focus-border"></div>
+                    </div>
+                    <button type="submit" class="submit-btn">
+                        <span>Send Message</span>
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
     <section id="internship" class="section">
         <div class="container fade-in">
-            <h2>Internship</h2>
+            <h2 class="animate">Internship</h2>
             <div class="internship-content">
-                <div class="internship-card">
+                <div class="internship-card animate animate-delay-1">
                     <h3>Summer Internship 2023</h3>
                     <p>Description of internship experience and responsibilities</p>
                 </div>
@@ -159,11 +228,15 @@
         </div>
     </section>
 
-    <footer>
+    <footer class="footer">
         <div class="container">
-            <p>&copy; 2025 My Portfolio. All rights reserved.</p>
+            <p>&copy; 2024 Owen Samson. All rights reserved.</p>
         </div>
     </footer>
+
+    <button id="back-to-top" class="back-to-top" aria-label="Back to top">
+        <i class="fas fa-chevron-up"></i>
+    </button>
 
     <script src="script.js"></script>
 </body>
