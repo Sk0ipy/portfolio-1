@@ -13,6 +13,7 @@
     --text-secondary: #BBE1FA;
     --transition: all 0.3s ease;
     --accent-color-rgb: 50, 130, 184;  /* RGB values for #3282B8 */
+    --bg-color: #E3FDFD; /* Added bg-color variable */
 }
 
 :root[data-theme="light"] {
@@ -22,6 +23,7 @@
     --text-color: #1B262C;
     --text-secondary: #0F4C75;
     --accent-color-rgb: 113, 201, 206;  /* RGB values for #71C9CE */
+    --bg-color: #1B262C; /* Added bg-color variable */
 }
 
 html {
@@ -280,7 +282,6 @@ body {
     min-height: 100vh;
     text-align: center;
     position: relative;
-    background: url('https://source.unsplash.com/random/1920x1080/?abstract') center/cover;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -538,126 +539,249 @@ body {
 /* Projects Grid */
 .projects-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
     gap: 2rem;
     margin-top: 2rem;
 }
 
 .project-card {
-    background-color: var(--secondary-color);
+    background: rgba(var(--accent-color-rgb), 0.05);
     border-radius: 15px;
-    padding: 2rem;
-    position: relative;
     overflow: hidden;
-    transition: var(--transition);
-    border: 2px solid transparent;
-}
-
-.project-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(
-        90deg,
-        transparent,
-        rgba(var(--accent-color-rgb), 0.2),
-        transparent
-    );
-    transition: 0.5s;
-}
-
-.project-card:hover::before {
-    left: 100%;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid rgba(var(--accent-color-rgb), 0.1);
 }
 
 .project-card:hover {
-    border-color: var(--accent-color);
-    transform: translateX(5px);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
 }
 
-.project-card h3 {
-    font-size: 1.5rem;
-    margin-bottom: 1rem;
+.project-image {
     position: relative;
-    padding-bottom: 0.5rem;
+    width: 100%;
+    height: 200px;
+    overflow: hidden;
 }
 
-.project-card h3::after {
-    content: '';
+.project-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.project-card:hover .project-image img {
+    transform: scale(1.05);
+}
+
+.project-links {
     position: absolute;
+    top: 0;
     left: 0;
+    right: 0;
     bottom: 0;
-    width: 0;
-    height: 2px;
-    background-color: var(--accent-color);
-    transition: width 0.3s ease;
+    background: rgba(var(--accent-color-rgb), 0.9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    opacity: 0;
+    transition: opacity 0.3s ease;
 }
 
-.project-card:hover h3::after {
-    width: 50px;
-}
-
-.project-card p {
-    margin-bottom: 1.5rem;
-    transform: translateY(20px);
-    opacity: 0.7;
-    transition: var(--transition);
-}
-
-.project-card:hover p {
-    transform: translateY(0);
+.project-card:hover .project-links {
     opacity: 1;
 }
 
 .project-link {
-    display: inline-block;
-    color: var(--accent-color);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.8rem 1.2rem;
+    background: var(--bg-color);
+    color: var(--text-color);
+    border-radius: 25px;
     text-decoration: none;
-    font-weight: 500;
-    position: relative;
-    padding: 0.5rem 0;
-    transition: var(--transition);
-    opacity: 0.7;
+    font-size: 0.9rem;
+    transition: transform 0.2s ease;
 }
 
-.project-link::after {
-    content: '→';
-    margin-left: 5px;
-    transition: var(--transition);
+.project-link:hover {
+    transform: translateY(-2px);
 }
 
-.project-card:hover .project-link {
-    opacity: 1;
+.project-content {
+    padding: 1.5rem;
 }
 
-.project-card:hover .project-link::after {
-    transform: translateX(5px);
+.project-content h3 {
+    margin: 0 0 1rem;
+    color: var(--text-color);
 }
 
-@keyframes projectSlideIn {
-    from {
-        opacity: 0;
-        transform: translateX(-30px);
+.project-content p {
+    margin: 0 0 1.5rem;
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+.project-content .tech-stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.project-content .tech-tag {
+    background: rgba(var(--accent-color-rgb), 0.1);
+    color: var(--accent-color);
+    padding: 0.4rem 0.8rem;
+    border-radius: 15px;
+    font-size: 0.85rem;
+}
+
+@media (max-width: 768px) {
+    .projects-grid {
+        grid-template-columns: 1fr;
     }
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
-}
-
-.project-card.animate {
-    animation: projectSlideIn 0.6s ease forwards;
 }
 
 /* Internship Section */
-.internship-card {
-    background-color: var(--secondary-color);
-    padding: 2rem;
-    border-radius: 10px;
+.internship-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
     margin-top: 2rem;
+}
+
+.internship-card {
+    background: rgba(var(--accent-color-rgb), 0.05);
+    border-radius: 15px;
+    padding: 2rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid rgba(var(--accent-color-rgb), 0.1);
+}
+
+.internship-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.internship-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.internship-header h3 {
+    margin: 0;
+    color: var(--text-color);
+}
+
+.status {
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.status.completed {
+    background: rgba(46, 213, 115, 0.1);
+    color: #2ed573;
+}
+
+.status.upcoming {
+    background: rgba(var(--accent-color-rgb), 0.1);
+    color: var(--accent-color);
+}
+
+.internship-details {
+    margin-bottom: 1.5rem;
+}
+
+.detail-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.8rem;
+}
+
+.detail-item i {
+    margin-right: 0.8rem;
+    color: var(--accent-color);
+    width: 20px;
+}
+
+.tech-stack, .internship-goals, .internship-interests {
+    margin-bottom: 1.5rem;
+}
+
+.tech-tags, .interest-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.tech-tag, .interest-tag {
+    background: rgba(var(--accent-color-rgb), 0.1);
+    color: var(--accent-color);
+    padding: 0.4rem 0.8rem;
+    border-radius: 15px;
+    font-size: 0.9rem;
+}
+
+.achievements ul, .internship-goals ul {
+    list-style: none;
+    padding: 0;
+    margin: 0.5rem 0;
+}
+
+.achievements li {
+    margin-bottom: 0.5rem;
+    position: relative;
+    padding-left: 1.5rem;
+}
+
+.achievements li::before {
+    content: "•";
+    color: var(--accent-color);
+    position: absolute;
+    left: 0;
+}
+
+.internship-goals li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.internship-goals li i {
+    margin-right: 1rem;
+    color: var(--accent-color);
+    width: 20px;
+}
+
+.seeking-opportunities {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin-top: 1.5rem;
+    padding: 1rem;
+    background: rgba(var(--accent-color-rgb), 0.05);
+    border-radius: 10px;
+    font-weight: 500;
+}
+
+.seeking-opportunities i {
+    color: var(--accent-color);
+}
+
+@media (max-width: 768px) {
+    .internship-content {
+        grid-template-columns: 1fr;
+    }
 }
 
 /* Skills Section */
@@ -1130,4 +1254,68 @@ footer {
 .fade-in.visible {
     opacity: 1;
     transform: translateY(0);
+}
+
+/* Custom Scrollbar Styles */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(50, 130, 184, 0.2);  /* Subtle version of accent color */
+    border-radius: 20px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+    transition: background 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(50, 130, 184, 0.4);  /* More visible on hover */
+}
+
+::-webkit-scrollbar-button {
+    display: none;
+}
+
+/* Firefox scrollbar styles */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(50, 130, 184, 0.2) transparent;
+}
+
+/* Light theme scrollbar */
+:root[data-theme="light"] ::-webkit-scrollbar-thumb {
+    background: rgba(113, 201, 206, 0.2);  /* Light theme accent color */
+}
+
+:root[data-theme="light"] ::-webkit-scrollbar-thumb:hover {
+    background: rgba(113, 201, 206, 0.4);
+}
+
+:root[data-theme="light"] * {
+    scrollbar-color: rgba(113, 201, 206, 0.2) transparent;
+}
+
+/* Typing animation styles */
+.typed-text {
+    font-weight: 500;
+}
+
+.cursor {
+    display: inline-block;
+    width: 3px;
+    background-color: var(--accent-color);
+    animation: blink 0.75s infinite;
+    margin-left: 2px;
+}
+
+@keyframes blink {
+    0% { opacity: 1; }
+    50% { opacity: 0; }
+    100% { opacity: 1; }
 }

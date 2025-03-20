@@ -29,6 +29,7 @@
                     <li><a href="#about">About</a></li>
                     <li><a href="#education">Education</a></li>
                     <li><a href="#hobbies">Hobbies & Sports</a></li>
+                    <li><a href="#skills">Technical Skills</a></li>
                     <li><a href="#projects">Projects</a></li>
                     <li><a href="#internship">Internship</a></li>
                     <li><a href="#contact">Contact</a></li>
@@ -40,7 +41,10 @@
     <section id="home" class="section">
         <div class="container fade-in">
             <h1 class="animate">Welcome to My Portfolio</h1>
-            <p class="tagline animate animate-delay-1">Web Developer & Designer</p>
+            <p class="tagline animate animate-delay-1">
+                <span class="typed-text"></span>
+                <span class="cursor">&nbsp;</span>
+            </p>
             <a href="#" class="cta-button animate animate-delay-2" download>Download CV</a>
         </div>
     </section>
@@ -148,19 +152,158 @@
             <h2 class="animate">My Projects</h2>
             <div class="projects-grid">
                 <div class="project-card animate animate-delay-1">
-                    <h3>Project 1</h3>
-                    <p>Description of project 1</p>
-                    <a href="#" class="project-link">View Project</a>
+                    <div class="project-image">
+                        <img src="images/project-ecommerce.jpg" alt="E-commerce Dashboard">
+                        <div class="project-links">
+                            <a href="https://github.com/yourusername/ecommerce-dashboard" class="project-link" target="_blank">
+                                <i class="fab fa-github"></i>
+                                <span>Source Code</span>
+                            </a>
+                            <a href="https://ecommerce-dashboard-demo.com" class="project-link" target="_blank">
+                                <i class="fas fa-external-link-alt"></i>
+                                <span>Live Demo</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="project-content">
+                        <h3>E-commerce Dashboard</h3>
+                        <p>A full-stack e-commerce analytics dashboard with real-time data visualization and inventory management. Features include user authentication, sales tracking, and automated reporting.</p>
+                        <div class="tech-stack">
+                            <span class="tech-tag">Laravel</span>
+                            <span class="tech-tag">Vue.js</span>
+                            <span class="tech-tag">MySQL</span>
+                            <span class="tech-tag">Chart.js</span>
+                        </div>
+                    </div>
                 </div>
+
                 <div class="project-card animate animate-delay-2">
-                    <h3>Project 2</h3>
-                    <p>Description of project 2</p>
-                    <a href="#" class="project-link">View Project</a>
+                    <div class="project-image">
+                        <img src="images/project-security.jpg" alt="Security Scanner">
+                        <div class="project-links">
+                            <a href="https://github.com/yourusername/security-scanner" class="project-link" target="_blank">
+                                <i class="fab fa-github"></i>
+                                <span>Source Code</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="project-content">
+                        <h3>Network Security Scanner</h3>
+                        <p>A Python-based security tool that performs automated vulnerability assessments and port scanning. Includes custom reporting and integration with common security frameworks.</p>
+                        <div class="tech-stack">
+                            <span class="tech-tag">Python</span>
+                            <span class="tech-tag">Nmap</span>
+                            <span class="tech-tag">SQLite</span>
+                            <span class="tech-tag">Docker</span>
+                        </div>
+                    </div>
                 </div>
+
                 <div class="project-card animate animate-delay-3">
-                    <h3>Project 3</h3>
-                    <p>Description of project 3</p>
-                    <a href="#" class="project-link">View Project</a>
+                    <div class="project-image">
+                        <img src="images/project-portfolio.jpg" alt="Portfolio Website">
+                        <div class="project-links">
+                            <a href="https://github.com/yourusername/portfolio" class="project-link" target="_blank">
+                                <i class="fab fa-github"></i>
+                                <span>Source Code</span>
+                            </a>
+                            <a href="#" class="project-link">
+                                <i class="fas fa-external-link-alt"></i>
+                                <span>Live Site</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="project-content">
+                        <h3>Personal Portfolio</h3>
+                        <p>A modern, responsive portfolio website built from scratch. Features include dark/light theme switching, smooth animations, and optimized performance.</p>
+                        <div class="tech-stack">
+                            <span class="tech-tag">HTML5</span>
+                            <span class="tech-tag">CSS3</span>
+                            <span class="tech-tag">JavaScript</span>
+                            <span class="tech-tag">GSAP</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="internship" class="section">
+        <div class="container fade-in">
+            <h2 class="animate">Internship Experience</h2>
+            <div class="internship-content">
+                <div class="internship-card completed animate animate-delay-1">
+                    <div class="internship-header">
+                        <h3>Internship</h3>
+                        <span class="status completed">Completed</span>
+                    </div>
+                    <div class="internship-details">
+                        <div class="detail-item">
+                            <i class="fas fa-building"></i>
+                            <span>Boval</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <span>Velserbroek</span>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-calendar-alt"></i>
+                            <span>Duration: 5 months</span>
+                        </div>
+                    </div>
+                    <div class="tech-stack">
+                        <h4>Technologies Used</h4>
+                        <div class="tech-tags">
+                            <span class="tech-tag">PHP</span>
+                            <span class="tech-tag">Laravel</span>
+                            <span class="tech-tag">Wordpress</span>
+                            <span class="tech-tag">API</span>
+                        </div>
+                    </div>
+                    <div class="achievements">
+                        <h4>Key Achievements</h4>
+                        <ul>
+                            <li>Developed and maintained web applications</li>
+                            <li>Collaborated with senior developers</li>
+                            <li>Improved API performance</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="internship-card upcoming animate animate-delay-2">
+                    <div class="internship-header">
+                        <h3>Upcoming Internship</h3>
+                        <span class="status upcoming">Coming Soon</span>
+                    </div>
+                    <div class="internship-goals">
+                        <h4>Goals & Focus Areas</h4>
+                        <ul>
+                            <li>
+                                <i class="fas fa-shield-alt"></i>
+                                <span>Gain hands-on experience in cybersecurity</span>
+                            </li>
+                            <li>
+                                <i class="fas fa-code-branch"></i>
+                                <span>Work on real-world security projects</span>
+                            </li>
+                            <li>
+                                <i class="fas fa-users"></i>
+                                <span>Collaborate with security professionals</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="internship-interests">
+                        <h4>Areas of Interest</h4>
+                        <div class="interest-tags">
+                            <span class="interest-tag">Penetration Testing</span>
+                            <span class="interest-tag">Network Security</span>
+                            <span class="interest-tag">Security Analysis</span>
+                        </div>
+                    </div>
+                    <p class="seeking-opportunities">
+                        <i class="fas fa-handshake"></i>
+                        Currently seeking cybersecurity internship opportunities
+                    </p>
                 </div>
             </div>
         </div>
@@ -214,18 +357,6 @@
                         <i class="fas fa-paper-plane"></i>
                     </button>
                 </form>
-            </div>
-        </div>
-    </section>
-
-    <section id="internship" class="section">
-        <div class="container fade-in">
-            <h2 class="animate">Internship</h2>
-            <div class="internship-content">
-                <div class="internship-card animate animate-delay-1">
-                    <h3>Summer Internship 2023</h3>
-                    <p>Description of internship experience and responsibilities</p>
-                </div>
             </div>
         </div>
     </section>

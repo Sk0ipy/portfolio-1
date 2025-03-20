@@ -159,6 +159,58 @@ function renderSkills() {
     `).join('');
 }
 
+// Typing animation
+const typedTextSpan = document.querySelector('.typed-text');
+const cursor = document.querySelector('.cursor');
+
+const roles = [
+    'Web Developer & Designer',
+    'Cybersecurity Enthusiast',
+    'Software Developer',
+    'Problem Solver',
+    'Full Stack Developer'
+];
+
+let roleIndex = 0;
+let charIndex = 0;
+let isDeleting = false;
+let isWaiting = false;
+
+function typeEffect() {
+    const currentRole = roles[roleIndex];
+    const shouldDelete = isDeleting;
+    const currentChar = charIndex;
+
+    if (!isWaiting) {
+        if (!shouldDelete && currentChar < currentRole.length) {
+            typedTextSpan.textContent = currentRole.substring(0, currentChar + 1);
+            charIndex++;
+        } else if (shouldDelete && currentChar > 0) {
+            typedTextSpan.textContent = currentRole.substring(0, currentChar - 1);
+            charIndex--;
+        } else if (shouldDelete && currentChar === 0) {
+            isDeleting = false;
+            roleIndex = (roleIndex + 1) % roles.length;
+        } else if (!shouldDelete && currentChar === currentRole.length) {
+            isWaiting = true;
+            setTimeout(() => {
+                isWaiting = false;
+                isDeleting = true;
+            }, 2000); // Wait 2 seconds before deleting
+        }
+    }
+
+    const typingSpeed = isDeleting ? 50 : 100; // Faster deletion, slower typing
+    setTimeout(typeEffect, typingSpeed);
+}
+
+// Start the typing animation when the page loads
+document.addEventListener('DOMContentLoaded', () => {
+    if (typedTextSpan) {
+        setTimeout(typeEffect, 1000); // Start after 1 second
+    }
+});
+
 // Mouse tracking for hobby cards
 document.addEventListener('DOMContentLoaded', () => {
     const cards = document.querySelectorAll('.hobby-card');
