@@ -94,152 +94,130 @@ themeToggle.addEventListener('change', () => {
     localStorage.setItem('theme', theme);
 });
 
-// Animate skill bars when they come into view
-const skillBars = document.querySelectorAll('.progress-bar');
-const skillObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            const percent = entry.target.dataset.percent;
-            entry.target.style.setProperty('--percent', `${percent}%`);
-            skillObserver.unobserve(entry.target);
+// Skills Configuration - Easy to edit
+const skillsConfig = {
+    categories: [
+        {
+            name: 'Frontend Development',
+            icon: 'fa-code',
+            skills: [
+                { name: 'HTML5', level: 95 },
+                { name: 'CSS3', level: 90 },
+                { name: 'JavaScript', level: 85 }
+            ]
+        },
+        {
+            name: 'Backend Development',
+            icon: 'fa-server',
+            skills: [
+                { name: 'PHP', level: 80 },
+                { name: 'Python', level: 75 },
+                { name: 'MySQL', level: 85 }
+            ]
+        },
+        {
+            name: 'Security & DevOps',
+            icon: 'fa-shield-alt',
+            skills: [
+                { name: 'Network Security', level: 70 },
+                { name: 'Docker', level: 65 },
+                { name: 'Git', level: 85 }
+            ]
         }
-    });
-}, { threshold: 0.5 });
+    ]
+};
 
-skillBars.forEach(bar => skillObserver.observe(bar));
-
-// Skills data - Easy to maintain and update
-const skills = [
-    { name: 'HTML & CSS', rating: 3 },
-    { name: 'JavaScript', rating: 3.5 },
-    { name: 'PHP', rating: 4 },
-    { name: 'Python', rating: 4 },
-    { name: 'C#', rating: 4 },
-    { name: 'C++', rating: 3 },
-];
-
-// Function to generate star HTML based on rating
-function generateStars(rating) {
-    const fullStars = Math.floor(rating);
-    const hasHalfStar = rating % 1 !== 0;
-    const emptyStars = 5 - Math.ceil(rating);
-    
-    let starsHTML = '';
-    
-    // Add full stars
-    for (let i = 0; i < fullStars; i++) {
-        starsHTML += '<i class="fas fa-star"></i>';
-    }
-    
-    // Add half star if needed
-    if (hasHalfStar) {
-        starsHTML += '<i class="fas fa-star-half-alt"></i>';
-    }
-    
-    // Add empty stars
-    for (let i = 0; i < emptyStars; i++) {
-        starsHTML += '<i class="far fa-star"></i>';
-    }
-    
-    return starsHTML;
-}
+// Function to get skill level text based on percentage
+const getSkillLevel = (level) => {
+    if (level >= 90) return 'Advanced';
+    if (level >= 75) return 'Proficient';
+    if (level >= 60) return 'Intermediate';
+    return 'Basic';
+};
 
 // Function to render skills
-function renderSkills() {
-    const skillsWrapper = document.getElementById('skills-wrapper');
-    if (!skillsWrapper) return;
+const renderSkills = () => {
+    const container = document.getElementById('skills-container');
+    if (!container) return;
 
-    skillsWrapper.innerHTML = skills.map((skill, index) => `
-        <div class="skill-tag" style="--i: ${index}">
-            <span class="skill-name">${skill.name}</span>
-            <div class="stars">
-                ${generateStars(skill.rating)}
+    const skillsHTML = skillsConfig.categories.map(category => `
+        <div class="skills-category">
+            <div class="category-header">
+                <i class="fas ${category.icon}"></i>
+                <h3>${category.name}</h3>
+            </div>
+            <div class="skills-grid">
+                ${category.skills.map(skill => `
+                    <div class="skill-item" data-skill="${skill.name}" data-level="${skill.level}">
+                        <div class="skill-info">
+                            <span class="skill-name">${skill.name}</span>
+                            <span class="skill-level">${getSkillLevel(skill.level)}</span>
+                        </div>
+                        <div class="skill-bar"></div>
+                    </div>
+                `).join('')}
             </div>
         </div>
     `).join('');
-}
+
+    container.innerHTML = skillsHTML;
+
+    // Initialize skill animations
+    const skillItems = document.querySelectorAll('.skill-item[data-skill]');
+    const skillsObserver = new IntersectionObserver(
+        (entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const skillItem = entry.target;
+                    const level = skillItem.dataset.level;
+                    skillItem.style.setProperty('--level', level);
+                    observer.unobserve(skillItem);
+                }
+            });
+        },
+        { threshold: 0.5 }
+    );
+
+    skillItems.forEach(item => {
+        skillsObserver.observe(item);
+    });
+};
+
+// Animate skill bars when they come into view
+const skillItems = document.querySelectorAll('.skill-item[data-skill]');
+
+const animateSkills = (entries, observer) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            const skillItem = entry.target;
+            const level = skillItem.dataset.level;
+            skillItem.style.setProperty('--level', level);
+            observer.unobserve(skillItem);
+        }
+    });
+};
+
+const skillsObserver = new IntersectionObserver(animateSkills, {
+    threshold: 0.5
+});
+
+skillItems.forEach(item => {
+    skillsObserver.observe(item);
+});
 
 // Typing animation
 const typedTextSpan = document.querySelector('.typed-text');
 const cursor = document.querySelector('.cursor');
 
 const roles = [
-    'Web Developer & Designer',
-    'Cybersecurity Enthusiast',
     'Software Developer',
-    'Problem Solver',
-    'Full Stack Developer'
+    'Cybersecurity Enthusiast',
+    'Full Stack Developer',
+    'Creative Web Builder',
+    'Hobby Game Developer',
+    'UI/UX Minimalist',
+    'Problem Solver'
 ];
-
-let roleIndex = 0;
-let charIndex = 0;
-let isDeleting = false;
-let isWaiting = false;
-
-function typeEffect() {
-    const currentRole = roles[roleIndex];
-    const shouldDelete = isDeleting;
-    const currentChar = charIndex;
-
-    if (!isWaiting) {
-        if (!shouldDelete && currentChar < currentRole.length) {
-            typedTextSpan.textContent = currentRole.substring(0, currentChar + 1);
-            charIndex++;
-        } else if (shouldDelete && currentChar > 0) {
-            typedTextSpan.textContent = currentRole.substring(0, currentChar - 1);
-            charIndex--;
-        } else if (shouldDelete && currentChar === 0) {
-            isDeleting = false;
-            roleIndex = (roleIndex + 1) % roles.length;
-        } else if (!shouldDelete && currentChar === currentRole.length) {
-            isWaiting = true;
-            setTimeout(() => {
-                isWaiting = false;
-                isDeleting = true;
-            }, 2000); // Wait 2 seconds before deleting
-        }
-    }
-
-    const typingSpeed = isDeleting ? 50 : 100; // Faster deletion, slower typing
-    setTimeout(typeEffect, typingSpeed);
-}
-
-// Start the typing animation when the page loads
-document.addEventListener('DOMContentLoaded', () => {
-    if (typedTextSpan) {
-        setTimeout(typeEffect, 1000); // Start after 1 second
-    }
-});
-
-// Mouse tracking for hobby cards
-document.addEventListener('DOMContentLoaded', () => {
-    const cards = document.querySelectorAll('.hobby-card');
-    
-    cards.forEach(card => {
-        card.addEventListener('mousemove', (e) => {
-            const rect = card.getBoundingClientRect();
-            const x = ((e.clientX - rect.left) / card.clientWidth) * 100;
-            const y = ((e.clientY - rect.top) / card.clientHeight) * 100;
-            
-            card.style.setProperty('--mouse-x', `${x}%`);
-            card.style.setProperty('--mouse-y', `${y}%`);
-            
-            // Calculate tilt based on mouse position
-            const centerX = rect.width / 2;
-            const centerY = rect.height / 2;
-            const rotateY = ((e.clientX - rect.left) - centerX) / 20;
-            const rotateX = (centerY - (e.clientY - rect.top)) / 20;
-            
-            card.style.transform = `translateY(-10px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-        });
-        
-        card.addEventListener('mouseleave', () => {
-            card.style.transform = 'translateY(0) rotateX(0) rotateY(0)';
-        });
-    });
-
-    renderSkills();
-});
 
 // Back to top button functionality
 const backToTopButton = document.getElementById('back-to-top');
@@ -311,3 +289,72 @@ if (contactForm) {
         }
     });
 }
+
+let roleIndex = 0;
+let charIndex = 0;
+let isDeleting = false;
+let isWaiting = false;
+
+function typeEffect() {
+    const currentRole = roles[roleIndex];
+    const shouldDelete = isDeleting;
+    const currentChar = charIndex;
+
+    if (!isWaiting) {
+        if (!shouldDelete && currentChar < currentRole.length) {
+            typedTextSpan.textContent = currentRole.substring(0, currentChar + 1);
+            charIndex++;
+        } else if (shouldDelete && currentChar > 0) {
+            typedTextSpan.textContent = currentRole.substring(0, currentChar - 1);
+            charIndex--;
+        } else if (shouldDelete && currentChar === 0) {
+            isDeleting = false;
+            roleIndex = (roleIndex + 1) % roles.length;
+        } else if (!shouldDelete && currentChar === currentRole.length) {
+            isWaiting = true;
+            setTimeout(() => {
+                isWaiting = false;
+                isDeleting = true;
+            }, 2000); // Wait 2 seconds before deleting
+        }
+    }
+
+    const typingSpeed = isDeleting ? 50 : 100; // Faster deletion, slower typing
+    setTimeout(typeEffect, typingSpeed);
+}
+
+// Start the typing animation when the page loads
+document.addEventListener('DOMContentLoaded', () => {
+    if (typedTextSpan) {
+        setTimeout(typeEffect, 1000); // Start after 1 second
+    }
+    renderSkills();
+});
+
+// Mouse tracking for hobby cards
+document.addEventListener('DOMContentLoaded', () => {
+    const cards = document.querySelectorAll('.hobby-card');
+    
+    cards.forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = ((e.clientX - rect.left) / card.clientWidth) * 100;
+            const y = ((e.clientY - rect.top) / card.clientHeight) * 100;
+            
+            card.style.setProperty('--mouse-x', `${x}%`);
+            card.style.setProperty('--mouse-y', `${y}%`);
+            
+            // Calculate tilt based on mouse position
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            const rotateY = ((e.clientX - rect.left) - centerX) / 20;
+            const rotateX = (centerY - (e.clientY - rect.top)) / 20;
+            
+            card.style.transform = `translateY(-10px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+        });
+        
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = 'translateY(0) rotateX(0) rotateY(0)';
+        });
+    });
+});
