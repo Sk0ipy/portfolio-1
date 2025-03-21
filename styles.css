@@ -1313,7 +1313,6 @@ footer {
     border-radius: 20px;
     border: 2px solid transparent;
     background-clip: padding-box;
-    transition: background 0.3s ease;
 }
 
 ::-webkit-scrollbar-thumb:hover {

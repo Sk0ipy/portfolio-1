@@ -101,29 +101,22 @@ const skillsConfig = {
             name: 'Frontend Development',
             icon: 'fa-code',
             skills: [
-                { name: 'HTML5', level: 95 },
-                { name: 'CSS3', level: 90 },
-                { name: 'JavaScript', level: 85 }
+                { name: 'HTML5', level: 55 },
+                { name: 'CSS3', level: 50 },
+                { name: 'JavaScript', level: 53 }
             ]
         },
         {
             name: 'Backend Development',
             icon: 'fa-server',
             skills: [
-                { name: 'PHP', level: 80 },
+                { name: 'PHP', level: 60 },
                 { name: 'Python', level: 75 },
-                { name: 'MySQL', level: 85 }
+                { name: 'MySQL', level: 55 },
+                { name: 'C#', level: 70 },
+                { name: 'C++', level: 40 }
             ]
         },
-        {
-            name: 'Security & DevOps',
-            icon: 'fa-shield-alt',
-            skills: [
-                { name: 'Network Security', level: 70 },
-                { name: 'Docker', level: 65 },
-                { name: 'Git', level: 85 }
-            ]
-        }
     ]
 };
 
