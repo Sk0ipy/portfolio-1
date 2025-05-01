@@ -117,6 +117,18 @@ const skillsConfig = {
                 { name: 'C++', level: 40 }
             ]
         },
+<<<<<<< Updated upstream
+=======
+        {
+            name: 'Security & DevOps',
+            icon: 'fa-shield-alt',
+            skills: [
+                { name: 'Network Security', level: 70 },
+                { name: 'Docker', level: 45 },
+                { name: 'Git', level: 85 }
+            ]
+        }
+>>>>>>> Stashed changes
     ]
 };
 
@@ -249,10 +261,20 @@ if (contactForm) {
         submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
         submitBtn.disabled = true;
 
-        // Simulate sending (replace this with your actual form handling)
         try {
-            // Simulate API call
-            await new Promise(resolve => setTimeout(resolve, 1500));
+            // Send email using EmailJS
+            await emailjs.send(
+                'service_bcb4lrq',
+                'template_i6wco0r',
+                {
+                    to_name: "Owen",  
+                    name: data.name,  
+                    email: data.email,
+                    subject: data.subject,
+                    message: data.message,
+                    reply_to: data.email
+                }
+            );
             
             // Show success message
             submitBtn.innerHTML = '<i class="fas fa-check"></i> Sent!';
@@ -261,24 +283,25 @@ if (contactForm) {
             // Reset form
             contactForm.reset();
             
-            // Reset button after 2 seconds
+            // Reset button after 3 seconds
             setTimeout(() => {
                 submitBtn.innerHTML = originalBtnText;
                 submitBtn.style.backgroundColor = '';
                 submitBtn.disabled = false;
-            }, 2000);
+            }, 3000);
             
         } catch (error) {
             // Show error state
             submitBtn.innerHTML = '<i class="fas fa-exclamation-circle"></i> Error';
-            submitBtn.style.backgroundColor = '#f44336';
+            submitBtn.style.backgroundColor = '#ff4444';
+            console.error('Email error:', error);
             
-            // Reset button after 2 seconds
+            // Reset button after 3 seconds
             setTimeout(() => {
                 submitBtn.innerHTML = originalBtnText;
                 submitBtn.style.backgroundColor = '';
                 submitBtn.disabled = false;
-            }, 2000);
+            }, 3000);
         }
     });
 }
