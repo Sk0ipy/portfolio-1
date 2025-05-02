@@ -117,18 +117,6 @@ const skillsConfig = {
                 { name: 'C++', level: 40 }
             ]
         },
-<<<<<<< Updated upstream
-=======
-        {
-            name: 'Security & DevOps',
-            icon: 'fa-shield-alt',
-            skills: [
-                { name: 'Network Security', level: 70 },
-                { name: 'Docker', level: 45 },
-                { name: 'Git', level: 85 }
-            ]
-        }
->>>>>>> Stashed changes
     ]
 };
 
@@ -215,13 +203,13 @@ const typedTextSpan = document.querySelector('.typed-text');
 const cursor = document.querySelector('.cursor');
 
 const roles = [
-    'Software Developer',
-    'Cybersecurity Enthusiast',
-    'Full Stack Developer',
-    'Creative Web Builder',
-    'Hobby Game Developer',
+    'Software Ontwikkelaar',
+    'Cybersecurity Specialist',
+    'Full Stack Ontwikkelaar',
+    'Creatieve Web Bouwer',
+    'Hobby Game Ontwikkelaar',
     'UI/UX Minimalist',
-    'Problem Solver'
+    'Probleemoplosser'
 ];
 
 // Back to top button functionality
@@ -258,7 +246,7 @@ if (contactForm) {
         // Create loading state
         const submitBtn = contactForm.querySelector('.submit-btn');
         const originalBtnText = submitBtn.innerHTML;
-        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Versturen...';
         submitBtn.disabled = true;
 
         try {
@@ -277,7 +265,7 @@ if (contactForm) {
             );
             
             // Show success message
-            submitBtn.innerHTML = '<i class="fas fa-check"></i> Sent!';
+            submitBtn.innerHTML = '<i class="fas fa-check"></i> Verzonden!';
             submitBtn.style.backgroundColor = '#4CAF50';
             
             // Reset form
@@ -292,7 +280,7 @@ if (contactForm) {
             
         } catch (error) {
             // Show error state
-            submitBtn.innerHTML = '<i class="fas fa-exclamation-circle"></i> Error';
+            submitBtn.innerHTML = '<i class="fas fa-exclamation-circle"></i> Fout';
             submitBtn.style.backgroundColor = '#ff4444';
             console.error('Email error:', error);
             

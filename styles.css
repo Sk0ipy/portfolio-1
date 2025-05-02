@@ -24,20 +24,23 @@
     --primary-color: #1B262C;
     --secondary-color: #0F4C75;
     --accent-color: #3282B8;
-    --text-color: #BBE1FA;
-    --text-secondary: #BBE1FA;
+    --text-color: #E6F7FF; /* Verbeterd van #BBE1FA naar #E6F7FF voor beter contrast */
+    --text-secondary: #E6F7FF; /* Verbeterd voor consistentie */
     --transition: all 0.3s ease;
     --accent-color-rgb: 50, 130, 184;  /* RGB values for #3282B8 */
     --bg-color: #E3FDFD; /* Added bg-color variable */
+    /* Toegevoegde variabelen voor betere toegankelijkheid */
+    --focus-outline-color: #FF9800;
+    --focus-outline: 2px solid var(--focus-outline-color);
 }
 
 :root[data-theme="light"] {
     --primary-color: #E3FDFD;
     --secondary-color: #CBF1F5;
-    --accent-color: #71C9CE;
+    --accent-color: #0A7A85; /* Verbeterd van #71C9CE naar #0A7A85 voor beter contrast */
     --text-color: #1B262C;
     --text-secondary: #0F4C75;
-    --accent-color-rgb: 113, 201, 206;  /* RGB values for #71C9CE */
+    --accent-color-rgb: 10, 122, 133;  /* Bijgewerkte RGB waarden voor #0A7A85 */
     --bg-color: #1B262C; /* Added bg-color variable */
 }
 
@@ -1277,15 +1280,9 @@ body {
     flex-direction: column;
     gap: 1.5rem;
     padding: 2rem;
-<<<<<<< Updated upstream
     background: rgba(var(--accent-color-rgb), 0.05);
     border-radius: 15px;
     border: 1px solid rgba(var(--accent-color-rgb), 0.1);
-=======
-    background: rgba(15, 76, 117, 0.1);
-    border-radius: 16px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
->>>>>>> Stashed changes
 }
 
 @media (min-width: 769px) {
@@ -1336,10 +1333,12 @@ body {
 .form-group textarea:not(:placeholder-shown) + label,
 .form-group input:focus + label,
 .form-group textarea:focus + label {
-    transform: translateY(-1.5rem) scale(0.8);
+    transform: translateY(-1.1rem) scale(0.9);
     color: var(--accent-color);
-    background-color: var(--primary-color);
-    padding: 0 0.5rem;
+    /* Verbeterde styling zonder achtergrondkleur */
+    background: none;
+    padding: 0 0.2rem;
+    font-weight: 500;
 }
 
 .submit-btn {
@@ -1502,31 +1501,6 @@ body {
     background-color: var(--secondary-color);
 }
 
-/* Corner GIF */
-.corner-gif {
-    position: fixed;
-    bottom: 2rem;
-    left: 2rem;
-    z-index: 999;
-    width: 150px;
-    height: 150px;
-    pointer-events: none; /* Makes the GIF not interfere with clicking */
-}
-
-.corner-gif img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-}
-
-@media (max-width: 768px) {
-    .corner-gif {
-        width: 100px;
-        height: 100px;
-        bottom: 1.5rem;
-        left: 1.5rem;
-    }
-}
 
 /* Footer */
 footer {
@@ -1708,130 +1682,3 @@ footer {
     transform: scaleX(1);
     transform-origin: left;
 }
-<<<<<<< Updated upstream
-=======
-
-/* Interests section styling */
-.interests-container {
-    display: flex;
-    flex-direction: column;
-    gap: 2.5rem;
-    padding: 2rem 0;
-    max-width: 800px;
-    margin: 0 auto;
-}
-
-.interest-item {
-    display: flex;
-    gap: 2rem;
-    align-items: flex-start;
-    position: relative;
-    padding: 0 1rem;
-}
-
-.interest-item::before {
-    content: '';
-    position: absolute;
-    left: 2.5rem;
-    top: 4rem;
-    bottom: -2.5rem;
-    width: 2px;
-    background: linear-gradient(to bottom, var(--accent-color) 50%, transparent);
-    z-index: 1;
-}
-
-.interest-item:last-child::before {
-    display: none;
-}
-
-.interest-icon {
-    flex-shrink: 0;
-    width: 5rem;
-    height: 5rem;
-    border-radius: 50%;
-    background-color: var(--secondary-color);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    z-index: 2;
-    box-shadow: 0 0 20px rgba(var(--accent-color-rgb), 0.2);
-    transition: var(--transition);
-}
-
-.interest-icon i {
-    font-size: 2rem;
-    color: var(--accent-color);
-    transition: var(--transition);
-}
-
-.interest-content {
-    background-color: var(--secondary-color);
-    padding: 1.5rem;
-    border-radius: 1rem;
-    flex-grow: 1;
-    position: relative;
-    transition: var(--transition);
-}
-
-.interest-content::before {
-    content: '';
-    position: absolute;
-    left: -0.8rem;
-    top: 1.5rem;
-    width: 1rem;
-    height: 1rem;
-    background-color: var(--secondary-color);
-    transform: rotate(45deg);
-    transition: var(--transition);
-}
-
-/* Interest Item Content Styles
-----------------------------------*/
-.interest-content h3 {
-    /* Interest item title styles */
-    color: var(--accent-color);
-    margin-bottom: 0.5rem;
-    font-size: 1.2rem;
-}
-
-.interest-content p {
-    color: var(--text-color);
-    line-height: 1.6;
-    margin: 0;
-}
-
-.interest-item:hover .interest-icon {
-    transform: scale(1.1);
-    box-shadow: 0 0 30px rgba(var(--accent-color-rgb), 0.3);
-}
-
-.interest-item:hover .interest-icon i {
-    transform: scale(1.1);
-}
-
-@media (max-width: 768px) {
-    .interest-item {
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-        gap: 1rem;
-    }
-
-    .interest-item::before {
-        left: 50%;
-        top: 5rem;
-        transform: translateX(-50%);
-    }
-
-    .interest-content::before {
-        left: 50%;
-        top: -0.5rem;
-        transform: translateX(-50%) rotate(45deg);
-    }
-
-    .interest-content {
-        width: 100%;
-    }
-}
->>>>>>> Stashed changes
