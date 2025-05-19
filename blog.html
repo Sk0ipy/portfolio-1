@@ -124,127 +124,131 @@
             </div>
         </div>
     </div>
+
     <nav class="navbar">
         <div class="container nav-container">
+            <a href="index.html" class="back-link"><i class="fas fa-arrow-left"></i> Terug</a>
             <a href="index.html" class="logo">OS.</a>
-            <div class="nav-elements">
-                <div class="hamburger">
-                    <span class="bar"></span>
-                    <span class="bar"></span>
-                    <span class="bar"></span>
-                </div>
-                <ul class="nav-links">
-                    <li><a href="index.html#home">Home</a></li>
-                    <li><a href="index.html#about">Over Mij</a></li>
-                    <li><a href="index.html#projects">Projecten</a></li>
-                    <li><a href="index.html#contact">Contact</a></li>
-                </ul>
-            </div>
         </div>
     </nav>
 
-    <section class="blog-header">
-        <div class="container">
-            <div class="blog-title">
-                <h1>AI/ML voor Rocket League</h1>
-                <p class="blog-subtitle">Een reis door machine learning en reinforcement learning toegepast op Rocket League</p>
-            </div>
-        </div>
-    </section>
 
-    <section class="blog-content">
-        <div class="container">
-            <div class="project-calendar">
-                <h2 class="calendar-title">AI/ML Project Journey</h2>
-                <p class="calendar-subtitle">Klik op een dag om de voortgang en ontdekkingen van die dag te bekijken</p>
+
+    <section id="blog-overview" class="section">
+        <div class="container fade-in">
+            <div class="blog-intro">
+                <div class="section-header animate">
+                    <h1>AI/ML voor Rocket League</h1>
+                    <p class="section-subtitle">Een reis door machine learning en reinforcement learning toegepast op Rocket League</p>
+                </div>
+
+                <div class="blog-description animate animate-delay-1">
+                    <h3 class="description-subtitle"><i class="fas fa-robot"></i> AI Training Journey</h3>
+                    <p>Dit blog documenteert mijn ambitieuze experiment om een <strong>geavanceerde AI-agent</strong> te ontwikkelen die Rocket League kan spelen. Door gebruik te maken van state-of-the-art <strong>reinforcement learning</strong> technieken, train ik een neuraal netwerk dat leert van elke actie en reactie in het spel.</p>
+                    
+    
+                    
+                    <div class="highlight-points">
+                        <div class="highlight-point">
+                            <i class="fas fa-flask"></i>
+                            <span>Experimenteren met verschillende netwerk-architecturen</span>
+                        </div>
+                        <div class="highlight-point">
+                            <i class="fas fa-code"></i>
+                            <span>Python implementaties van deep learning modellen</span>
+                        </div>
+                        <div class="highlight-point">
+                            <i class="fas fa-chart-line"></i>
+                            <span>Analyse van trainingsresultaten en prestaties</span>
+                        </div>
+                    </div>
+                    
+
+                </div>
+            </div>
+
+            <div class="project-calendar animate animate-delay-2">
+                <h3 class="calendar-title">Dagelijkse Updates</h3>
+                <p class="calendar-subtitle">Klik op een dag om de voortgang en ontdekkingen te bekijken</p>
                 
                 <div class="calendar-grid" id="calendar-grid">
                 <!-- Calendar days will be dynamically created by the user through the admin panel -->
-            </div>
-            
-            <!-- Empty state that shows when no days exist -->
-            <div class="empty-state" id="empty-calendar-state">
-                <div class="empty-state-icon">
-                    <i class="fas fa-calendar-plus"></i>
                 </div>
-                <h3 class="empty-state-title">Nog geen blogdagen</h3>
-                <p class="empty-state-message">Gebruik het admin-panel om je eerste blogdag toe te voegen.</p>
-                <button id="empty-state-admin-button" class="empty-state-button">
-                    <i class="fas fa-lock"></i> Admin Panel Openen
-                </button>
-            </div>
-                
+            
+                <!-- Empty state that shows when no days exist -->
+                <div class="empty-state" id="empty-calendar-state">
+                    <div class="empty-state-icon">
+                        <i class="fas fa-calendar-plus"></i>
+                    </div>
+                    <h3 class="empty-state-title">Nog geen blogdagen</h3>
+                    <p class="empty-state-message">Gebruik het admin-panel om je eerste blogdag toe te voegen.</p>
+                    <button id="empty-state-admin-button" class="empty-state-button">
+                        <i class="fas fa-lock"></i> Admin Panel Openen
+                    </button>
+                </div>
             </div>
             
             <div class="blog-content-wrapper hidden">
                 <!-- Back button - will be shown when viewing content -->
                 <div class="back-to-calendar">
-                    <button id="back-button">
+                    <button id="back-button" class="primary-button">
                         <i class="fas fa-arrow-left"></i> Terug naar Kalender
                     </button>
                 </div>
                 
                 <!-- Blog posts will be dynamically created by the user through the admin panel -->
+                <div class="blog-post-content animate">
+                    <!-- Content will be inserted here dynamically -->
+                </div>
             </div> <!-- end of blog-content-wrapper -->
             
-            <aside class="blog-sidebar hidden" id="blog-sidebar">
-                <div class="sidebar-section about-project">
-                    <h3>Over Dit Project</h3>
-                    <p>Een machine learning experiment dat reinforcement learning gebruikt om een AI te trainen die Rocket League kan spelen.</p>
-                    <a href="index.html#projects" class="sidebar-link">Terug naar Projecten</a>
-                </div>
-                
-                <div class="sidebar-section categories">
-                    <h3>Categorieën</h3>
-                    <ul>
-                        <li><a href="#">Machine Learning</a></li>
-                        <li><a href="#">Reinforcement Learning</a></li>
-                        <li><a href="#">Game AI</a></li>
-                        <li><a href="#">Python</a></li>
-                        <li><a href="#">Data Analyse</a></li>
-                    </ul>
-                </div>
-                
+            <div class="blog-sidebar-wrapper animate animate-delay-3">
+                <aside class="blog-sidebar" id="blog-sidebar">
                 <div class="sidebar-section recent-posts">
-                    <h3>Geplande Posts</h3>
-                    <ul>
-                        <li><a href="#">Het opzetten van de trainingsomgeving</a></li>
-                        <li><a href="#">Eerste trainingsresultaten</a></li>
-                        <li><a href="#">Verfijnen van het beloningssysteem</a></li>
-                        <li><a href="#">Prestatie-evaluatie en optimalisatie</a></li>
+                    <h3>Recent Posts</h3>
+                    <ul id="recent-posts-list">
+                        <!-- Will be populated dynamically -->
+                        <li class="no-posts-message">No posts available yet.</li>
                     </ul>
                 </div>
             </aside>
+            </div>
         </div>
     </section>
-
-    <footer>
+    
+    <footer class="footer">
         <div class="container">
-            <div class="footer-content">
-                <div class="footer-logo">
-                    <a href="index.html">OS.</a>
-                </div>
-                <div class="footer-links">
-                    <a href="index.html#home">Home</a>
-                    <a href="index.html#about">Over Mij</a>
-                    <a href="index.html#projects">Projecten</a>
-                    <a href="index.html#contact">Contact</a>
-                </div>
-                <div class="footer-social">
-                    <a href="#" target="_blank"><i class="fab fa-github"></i></a>
-                    <a href="#" target="_blank"><i class="fab fa-linkedin"></i></a>
-                    <a href="#" target="_blank"><i class="fab fa-twitter"></i></a>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2025 Owen Samson. Alle rechten voorbehouden.</p>
-            </div>
+            <p>&copy; 2025 Owen Samson. Alle rechten voorbehouden.</p>
         </div>
     </footer>
+
+    <button id="back-to-top" class="back-to-top" aria-label="Terug naar boven">
+        <i class="fas fa-chevron-up"></i>
+    </button>
 
     <script src="script.js"></script>
     <!-- Custom JavaScript for the blog page -->
     <script>
+        // Back to Top Button Functionality
+        const blogBackToTopBtn = document.getElementById('back-to-top');
+        
+        // Show button when user scrolls down 300px
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                blogBackToTopBtn.classList.add('visible');
+            } else {
+                blogBackToTopBtn.classList.remove('visible');
+            }
+        });
+        
+        // Scroll to top when button is clicked
+        blogBackToTopBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+        
         document.addEventListener('DOMContentLoaded', function() {
             // Theme toggle functionality
             const themeToggle = document.getElementById('theme-toggle');
@@ -322,36 +326,69 @@
                 return false; // Prevent event bubbling
             });
             
-            // Mobile menu toggle
-            const hamburger = document.querySelector('.hamburger');
-            const navLinks = document.querySelector('.nav-links');
+            // Mobile menu code removed - no longer needed for simplified navigation
             
-            hamburger.addEventListener('click', () => {
-                hamburger.classList.toggle('active');
-                navLinks.classList.toggle('active');
-            });
-            
-            // Admin panel functionality
+            // Admin panel functionality - initialize properly
             const adminButton = document.getElementById('admin-button');
             const adminPanel = document.getElementById('admin-panel');
-            const passwordForm = document.getElementById('password-form');
-            const passwordSubmit = document.getElementById('password-submit');
-            const adminPassword = document.getElementById('admin-password');
-            const dayCreator = document.getElementById('day-creator');
-            const closeAdminPanel = document.getElementById('close-admin-panel');
-            const newDayForm = document.getElementById('new-day-form');
-            const tabButtons = document.querySelectorAll('.tab-btn');
-            const tabContents = document.querySelectorAll('.tab-content');
-            const previewButton = document.getElementById('preview-btn');
-            const postPreview = document.getElementById('post-preview');
-            const daysList = document.getElementById('days-list');
-            const noDaysMessage = document.querySelector('.no-days-message');
             
-            // Password for admin access - you can change this to your preferred password
-            const correctPassword = "SkOipy2025";
+            // Add event listener to the main admin button - with direct DOM access
+            if (adminButton) {
+                adminButton.addEventListener('click', function() {
+                    // Access elements directly by DOM ID to avoid scope issues
+                    const panel = document.getElementById('admin-panel');
+                    const passwordForm = document.getElementById('password-form');
+                    const dayCreator = document.getElementById('day-creator');
+                    const adminPasswordField = document.getElementById('admin-password');
+                    
+                    if (panel) panel.classList.remove('hidden');
+                    if (passwordForm) passwordForm.classList.remove('hidden');
+                    if (dayCreator) dayCreator.classList.add('hidden');
+                    if (adminPasswordField) adminPasswordField.focus();
+                });
+            }
             
-            // Tab switching functionality
-            tabButtons.forEach(button => {
+            // Only proceed with admin functionality if the panel exists
+            if (adminButton && adminPanel) {
+                const passwordForm = document.getElementById('password-form');
+                const passwordSubmit = document.getElementById('password-submit');
+                const adminPassword = document.getElementById('admin-password');
+                const dayCreator = document.getElementById('day-creator');
+                const closeAdminPanel = document.getElementById('close-admin-panel');
+                const newDayForm = document.getElementById('new-day-form');
+                const tabButtons = document.querySelectorAll('.tab-btn');
+                const tabContents = document.querySelectorAll('.tab-content');
+                const previewButton = document.getElementById('preview-btn');
+                const postPreview = document.getElementById('post-preview');
+                const daysList = document.getElementById('days-list');
+                const noDaysMessage = document.querySelector('.no-days-message');
+                
+                // Password for admin access - you can change this to your preferred password
+                const correctPassword = "SkOipy2025";
+                
+                // Function to automatically set the next day number
+                function setNextDayNumber() {
+                    const savedDays = JSON.parse(localStorage.getItem('blog-days') || '[]');
+                    let nextDayNumber = 1;
+                    
+                    if (savedDays.length > 0) {
+                        // Find the maximum day number and add 1
+                        const dayNumbers = savedDays.map(day => parseInt(day.number));
+                        nextDayNumber = Math.max(...dayNumbers) + 1;
+                    }
+                    
+                    // Set the value in the form
+                    document.getElementById('day-number').value = nextDayNumber;
+                    
+                    // Also set today's date as default
+                    const today = new Date();
+                    const months = ['Januari', 'Februari', 'Maart', 'April', 'Mei', 'Juni', 'Juli', 'Augustus', 'September', 'Oktober', 'November', 'December'];
+                    const dateString = `${today.getDate()} ${months[today.getMonth()]} ${today.getFullYear()}`;
+                    document.getElementById('day-date').value = dateString;
+                }
+                
+                // Tab switching functionality
+                tabButtons.forEach(button => {
                 button.addEventListener('click', () => {
                     const tabId = button.getAttribute('data-tab');
                     
@@ -363,8 +400,12 @@
                     tabContents.forEach(tab => tab.classList.remove('active'));
                     document.getElementById(tabId).classList.add('active');
                     
+                    // If switching to create tab, set next day number
+                    if (tabId === 'create-tab') {
+                        setNextDayNumber();
+                    }
                     // If switching to manage tab, refresh the days list
-                    if (tabId === 'manage-tab') {
+                    else if (tabId === 'manage-tab') {
                         renderDaysList();
                     }
                 });
@@ -572,6 +613,12 @@
                     // Show day creator form if password is correct
                     passwordForm.classList.add('hidden');
                     dayCreator.classList.remove('hidden');
+                    
+                    // Automatically set the next day number and current date
+                    setNextDayNumber();
+                    
+                    // Set focus to the day label field since day number is auto-populated
+                    document.getElementById('day-label').focus();
                 } else {
                     // Show error if password is wrong
                     adminPassword.style.borderColor = 'red';
@@ -765,13 +812,22 @@
             // Connect the Clear All Days button to its function
             document.getElementById('clear-all-days').addEventListener('click', clearAllDays);
             
-            // Connect empty state admin button to open admin panel
-            document.getElementById('empty-state-admin-button').addEventListener('click', function() {
-                adminPanel.classList.remove('hidden');
-                passwordForm.classList.remove('hidden');
-                dayCreator.classList.add('hidden');
-                document.getElementById('admin-password').focus();
-            });
+            // Connect empty state admin button to open admin panel - with direct DOM access
+            const emptyStateAdminButton = document.getElementById('empty-state-admin-button');
+            if (emptyStateAdminButton) {
+                emptyStateAdminButton.addEventListener('click', function() {
+                    // Access elements directly by DOM ID to avoid scope issues
+                    const panel = document.getElementById('admin-panel');
+                    const passwordForm = document.getElementById('password-form');
+                    const dayCreator = document.getElementById('day-creator');
+                    const adminPasswordField = document.getElementById('admin-password');
+                    
+                    if (panel) panel.classList.remove('hidden');
+                    if (passwordForm) passwordForm.classList.remove('hidden');
+                    if (dayCreator) dayCreator.classList.add('hidden');
+                    if (adminPasswordField) adminPasswordField.focus();
+                });
+            }
             
             // Check empty state when clearing days
             function updateEmptyStateAfterDelete() {
@@ -799,6 +855,7 @@
             
             // Initial check for empty state
             checkAndToggleEmptyState();
+            }
         });
     </script>
 </body>
