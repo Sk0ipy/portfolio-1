@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI/ML voor Rocket League - Blog</title>
+    <!-- Favicons voor verschillende apparaten en browsers -->
+    <link rel="icon" href="images/favicon/favicon.ico" sizes="any">
+    <link rel="icon" type="image/svg+xml" href="images/favicon/favicon.svg">
+    <link rel="apple-touch-icon" href="images/favicon/apple-touch-icon.png">
+    <link rel="manifest" href="images/favicon/site.webmanifest">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="blog-styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="theme-switch">
+        <input type="checkbox" id="theme-toggle">
+        <label for="theme-toggle" class="switch">
+            <i class="fas fa-sun"></i>
+            <i class="fas fa-moon"></i>
+        </label>
+    </div>
+    
+    <!-- Admin button (hidden by default) -->
+    <div class="admin-access">
+        <button id="admin-button"><i class="fas fa-lock"></i></button>
+    </div>
+    
+    <!-- Admin panel (hidden by default) -->
+    <div id="admin-panel" class="hidden">
+        <div class="admin-panel-content">
+            <h3>Admin Panel</h3>
+            <div id="password-form">
+                <input type="password" id="admin-password" placeholder="Password...">
+                <button id="password-submit">Login</button>
+            </div>
+            
+            <div id="day-creator" class="hidden">
+                <div class="admin-tabs">
+                    <button class="tab-btn active" data-tab="create-tab">Create New Day</button>
+                    <button class="tab-btn" data-tab="manage-tab">Manage Days</button>
+                </div>
+                
+                <!-- Create tab -->
+                <div id="create-tab" class="tab-content active">
+                    <form id="new-day-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="day-number">Day Number:</label>
+                                <input type="number" id="day-number" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="day-label">Short Label:</label>
+                                <input type="text" id="day-label" required maxlength="20">
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="day-date">Date:</label>
+                                <input type="text" id="day-date" required placeholder="e.g. 27 Mei 2025">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="day-category">Category:</label>
+                                <input type="text" id="day-category" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="day-title">Full Title:</label>
+                            <input type="text" id="day-title" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="day-content">Content (HTML allowed):</label>
+                            <textarea id="day-content" rows="10" required></textarea>
+                        </div>
+                        
+                        <div class="preview-toggle">
+                            <button type="button" id="preview-btn">Preview Post</button>
+                        </div>
+                        
+                        <div id="post-preview" class="hidden">
+                            <h4>Preview</h4>
+                            <div class="preview-container">
+                                <div class="preview-card">
+                                    <span class="preview-day">Day <span id="preview-day-number"></span></span>
+                                    <span class="preview-label" id="preview-label"></span>
+                                </div>
+                                
+                                <div class="preview-content">
+                                    <div class="preview-meta">
+                                        <span id="preview-date"></span>
+                                        <span id="preview-category"></span>
+                                    </div>
+                                    <h3 id="preview-title"></h3>
+                                    <div id="preview-body"></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <button type="submit" id="create-day-btn">Create New Day</button>
+                    </form>
+                </div>
+                
+                <!-- Manage tab -->
+                <div id="manage-tab" class="tab-content">
+                    <h4>Manage Existing Days</h4>
+                    <div class="manage-actions">
+                        <button id="clear-all-days" class="danger-button"><i class="fas fa-trash-alt"></i> Verwijder Alle Dagen</button>
+                    </div>
+                    <div id="days-list-container">
+                        <p class="no-days-message hidden">No days have been created yet.</p>
+                        <div id="days-list"></div>
+                    </div>
+                </div>
+                
+                <div class="admin-footer">
+                    <button id="close-admin-panel">Close Panel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <nav class="navbar">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">OS.</a>
+            <div class="nav-elements">
+                <div class="hamburger">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="index.html#home">Home</a></li>
+                    <li><a href="index.html#about">Over Mij</a></li>
+                    <li><a href="index.html#projects">Projecten</a></li>
+                    <li><a href="index.html#contact">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <section class="blog-header">
+        <div class="container">
+            <div class="blog-title">
+                <h1>AI/ML voor Rocket League</h1>
+                <p class="blog-subtitle">Een reis door machine learning en reinforcement learning toegepast op Rocket League</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="blog-content">
+        <div class="container">
+            <div class="project-calendar">
+                <h2 class="calendar-title">AI/ML Project Journey</h2>
+                <p class="calendar-subtitle">Klik op een dag om de voortgang en ontdekkingen van die dag te bekijken</p>
+                
+                <div class="calendar-grid" id="calendar-grid">
+                <!-- Calendar days will be dynamically created by the user through the admin panel -->
+            </div>
+            
+            <!-- Empty state that shows when no days exist -->
+            <div class="empty-state" id="empty-calendar-state">
+                <div class="empty-state-icon">
+                    <i class="fas fa-calendar-plus"></i>
+                </div>
+                <h3 class="empty-state-title">Nog geen blogdagen</h3>
+                <p class="empty-state-message">Gebruik het admin-panel om je eerste blogdag toe te voegen.</p>
+                <button id="empty-state-admin-button" class="empty-state-button">
+                    <i class="fas fa-lock"></i> Admin Panel Openen
+                </button>
+            </div>
+                
+            </div>
+            
+            <div class="blog-content-wrapper hidden">
+                <!-- Back button - will be shown when viewing content -->
+                <div class="back-to-calendar">
+                    <button id="back-button">
+                        <i class="fas fa-arrow-left"></i> Terug naar Kalender
+                    </button>
+                </div>
+                
+                <!-- Blog posts will be dynamically created by the user through the admin panel -->
+            </div> <!-- end of blog-content-wrapper -->
+            
+            <aside class="blog-sidebar hidden" id="blog-sidebar">
+                <div class="sidebar-section about-project">
+                    <h3>Over Dit Project</h3>
+                    <p>Een machine learning experiment dat reinforcement learning gebruikt om een AI te trainen die Rocket League kan spelen.</p>
+                    <a href="index.html#projects" class="sidebar-link">Terug naar Projecten</a>
+                </div>
+                
+                <div class="sidebar-section categories">
+                    <h3>Categorieën</h3>
+                    <ul>
+                        <li><a href="#">Machine Learning</a></li>
+                        <li><a href="#">Reinforcement Learning</a></li>
+                        <li><a href="#">Game AI</a></li>
+                        <li><a href="#">Python</a></li>
+                        <li><a href="#">Data Analyse</a></li>
+                    </ul>
+                </div>
+                
+                <div class="sidebar-section recent-posts">
+                    <h3>Geplande Posts</h3>
+                    <ul>
+                        <li><a href="#">Het opzetten van de trainingsomgeving</a></li>
+                        <li><a href="#">Eerste trainingsresultaten</a></li>
+                        <li><a href="#">Verfijnen van het beloningssysteem</a></li>
+                        <li><a href="#">Prestatie-evaluatie en optimalisatie</a></li>
+                    </ul>
+                </div>
+            </aside>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <a href="index.html">OS.</a>
+                </div>
+                <div class="footer-links">
+                    <a href="index.html#home">Home</a>
+                    <a href="index.html#about">Over Mij</a>
+                    <a href="index.html#projects">Projecten</a>
+                    <a href="index.html#contact">Contact</a>
+                </div>
+                <div class="footer-social">
+                    <a href="#" target="_blank"><i class="fab fa-github"></i></a>
+                    <a href="#" target="_blank"><i class="fab fa-linkedin"></i></a>
+                    <a href="#" target="_blank"><i class="fab fa-twitter"></i></a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Owen Samson. Alle rechten voorbehouden.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <!-- Custom JavaScript for the blog page -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Theme toggle functionality
+            const themeToggle = document.getElementById('theme-toggle');
+            const savedTheme = localStorage.getItem('theme');
+            
+            if (savedTheme) {
+                document.documentElement.setAttribute('data-theme', savedTheme);
+                if (savedTheme === 'dark') {
+                    themeToggle.checked = true;
+                }
+            }
+            
+            themeToggle.addEventListener('change', function() {
+                if (this.checked) {
+                    document.documentElement.setAttribute('data-theme', 'dark');
+                    localStorage.setItem('theme', 'dark');
+                } else {
+                    document.documentElement.setAttribute('data-theme', 'light');
+                    localStorage.setItem('theme', 'light');
+                }
+            });
+            
+            // Calendar days functionality
+            const calendarDays = document.querySelectorAll('.calendar-day');
+            const projectCalendar = document.querySelector('.project-calendar');
+            const contentWrapper = document.querySelector('.blog-content-wrapper');
+            const dayContents = document.querySelectorAll('.day-content');
+            const backToCalendar = document.querySelector('.back-to-calendar');
+            const blogSidebar = document.getElementById('blog-sidebar');
+            
+            // Function to show day content
+            function showDayContent(day) {
+                // Hide calendar, show content
+                projectCalendar.classList.add('hidden');
+                contentWrapper.classList.remove('hidden');
+                backToCalendar.classList.remove('hidden');
+                blogSidebar.classList.remove('hidden');
+                
+                // Show the specific day content
+                dayContents.forEach(content => {
+                    content.style.display = 'none';
+                });
+                document.getElementById(`day-${day}-content`).style.display = 'block';
+                
+                // Scroll to top
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            }
+            
+            // Add click event to each calendar day
+            calendarDays.forEach(day => {
+                day.addEventListener('click', () => {
+                    const dayNumber = day.getAttribute('data-day');
+                    showDayContent(dayNumber);
+                });
+            });
+            
+            // Back to calendar button
+            document.getElementById('back-button').addEventListener('click', function(e) {
+                e.preventDefault(); // Prevent default behavior
+                
+                // Show calendar, hide content
+                projectCalendar.classList.remove('hidden');
+                contentWrapper.classList.add('hidden');
+                blogSidebar.classList.add('hidden');
+                
+                // Scroll to top of calendar with a small offset for navigation
+                window.scrollTo({
+                    top: document.querySelector('.blog-header').offsetTop,
+                    behavior: 'smooth'
+                });
+                
+                return false; // Prevent event bubbling
+            });
+            
+            // Mobile menu toggle
+            const hamburger = document.querySelector('.hamburger');
+            const navLinks = document.querySelector('.nav-links');
+            
+            hamburger.addEventListener('click', () => {
+                hamburger.classList.toggle('active');
+                navLinks.classList.toggle('active');
+            });
+            
+            // Admin panel functionality
+            const adminButton = document.getElementById('admin-button');
+            const adminPanel = document.getElementById('admin-panel');
+            const passwordForm = document.getElementById('password-form');
+            const passwordSubmit = document.getElementById('password-submit');
+            const adminPassword = document.getElementById('admin-password');
+            const dayCreator = document.getElementById('day-creator');
+            const closeAdminPanel = document.getElementById('close-admin-panel');
+            const newDayForm = document.getElementById('new-day-form');
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            const tabContents = document.querySelectorAll('.tab-content');
+            const previewButton = document.getElementById('preview-btn');
+            const postPreview = document.getElementById('post-preview');
+            const daysList = document.getElementById('days-list');
+            const noDaysMessage = document.querySelector('.no-days-message');
+            
+            // Password for admin access - you can change this to your preferred password
+            const correctPassword = "SkOipy2025";
+            
+            // Tab switching functionality
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const tabId = button.getAttribute('data-tab');
+                    
+                    // Update active button
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    
+                    // Show selected tab content
+                    tabContents.forEach(tab => tab.classList.remove('active'));
+                    document.getElementById(tabId).classList.add('active');
+                    
+                    // If switching to manage tab, refresh the days list
+                    if (tabId === 'manage-tab') {
+                        renderDaysList();
+                    }
+                });
+            });
+            
+            // Preview functionality
+            previewButton.addEventListener('click', function() {
+                // Get form values
+                const dayNumber = document.getElementById('day-number').value || '#';
+                const dayLabel = document.getElementById('day-label').value || 'Label';
+                const dayDate = document.getElementById('day-date').value || 'Date';
+                const dayCategory = document.getElementById('day-category').value || 'Category';
+                const dayTitle = document.getElementById('day-title').value || 'Title';
+                const dayContent = document.getElementById('day-content').value || '<p>Content will appear here</p>';
+                
+                // Update preview elements
+                document.getElementById('preview-day-number').textContent = dayNumber;
+                document.getElementById('preview-label').textContent = dayLabel;
+                document.getElementById('preview-date').textContent = dayDate;
+                document.getElementById('preview-category').textContent = dayCategory;
+                document.getElementById('preview-title').textContent = dayTitle;
+                document.getElementById('preview-body').innerHTML = dayContent;
+                
+                // Show preview
+                postPreview.classList.remove('hidden');
+                
+                // Scroll to preview
+                postPreview.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+            
+            // Function to render the list of days in the manage tab
+            function renderDaysList() {
+                // Clear existing list
+                daysList.innerHTML = '';
+                
+                // Get saved days from localStorage
+                const savedDays = JSON.parse(localStorage.getItem('blog-days') || '[]');
+                
+                // Show message if there are no days
+                if (savedDays.length === 0) {
+                    noDaysMessage.classList.remove('hidden');
+                } else {
+                    noDaysMessage.classList.add('hidden');
+                    
+                    // Create list items for each day
+                    savedDays.forEach(day => {
+                        const dayItem = document.createElement('div');
+                        dayItem.className = 'day-item';
+                        dayItem.innerHTML = `
+                            <div class="day-info">
+                                <div class="day-number-badge">${day.number}</div>
+                                <div class="day-title-info">
+                                    <h5>${day.title}</h5>
+                                    <span class="day-date-info">${day.date} • ${day.category}</span>
+                                </div>
+                            </div>
+                            <div class="day-actions">
+                                <button class="delete-day" data-day="${day.number}"><i class="fas fa-trash"></i> Verwijderen</button>
+                            </div>
+                        `;
+                        
+                        daysList.appendChild(dayItem);
+                    });
+                    
+                    // Add event listeners for delete buttons
+                    document.querySelectorAll('.delete-day').forEach(button => {
+                        button.addEventListener('click', function() {
+                            const dayNumber = this.getAttribute('data-day');
+                            deleteDay(dayNumber);
+                        });
+                    });
+                }
+            }
+            
+            // Function to delete a day
+            function deleteDay(dayNumber) {
+                // Confirm deletion
+                if (confirm(`Weet je zeker dat je dag ${dayNumber} wilt verwijderen?`)) {
+                    // Get saved days from localStorage
+                    const savedDays = JSON.parse(localStorage.getItem('blog-days') || '[]');
+                    
+                    // Filter out the day to delete
+                    const updatedDays = savedDays.filter(day => day.number !== dayNumber);
+                    
+                    // Save updated list back to localStorage
+                    localStorage.setItem('blog-days', JSON.stringify(updatedDays));
+                    
+                    // Remove day from DOM
+                    const calendarDay = document.querySelector(`.calendar-day[data-day="${dayNumber}"]`);
+                    const dayContent = document.getElementById(`day-${dayNumber}-content`);
+                    
+                    if (calendarDay) calendarDay.remove();
+                    if (dayContent) dayContent.remove();
+                    
+                    // Re-render days list
+                    renderDaysList();
+                    
+                    // Show success message
+                    alert(`Dag ${dayNumber} is verwijderd!`);
+                }
+            }
+            
+            // Function to clear all days
+            function clearAllDays() {
+                // Count how many days there are
+                const savedDays = JSON.parse(localStorage.getItem('blog-days') || '[]');
+                const dayCount = savedDays.length;
+                
+                if (dayCount === 0) {
+                    alert('Er zijn geen dagen om te verwijderen.');
+                    return;
+                }
+                
+                // Confirm deletion with specific count
+                if (confirm(`Weet je zeker dat je alle ${dayCount} dagen wilt verwijderen? Dit kan niet ongedaan worden gemaakt!`)) {
+                    // Double-check with an extra confirmation for safety
+                    if (confirm(`Laatste waarschuwing! Dit verwijdert alle ${dayCount} dagen permanent.`)) {
+                        // Clear localStorage
+                        localStorage.removeItem('blog-days');
+                        
+                        // Remove all calendar days from DOM
+                        document.querySelectorAll('.calendar-day').forEach(day => {
+                            day.remove();
+                        });
+                        
+                        // Remove all day content from DOM
+                        document.querySelectorAll('.blog-post.day-content').forEach(content => {
+                            content.remove();
+                        });
+                        
+                        // Re-render days list
+                        renderDaysList();
+                        
+                        // Show success animation and message
+                        const listContainer = document.getElementById('days-list-container');
+                        listContainer.classList.add('deletion-animation');
+                        
+                        setTimeout(() => {
+                            listContainer.classList.remove('deletion-animation');
+                            alert('Alle dagen zijn succesvol verwijderd!');
+                        }, 500);
+                    }
+                }
+            }
+            
+            // Open admin panel
+            adminButton.addEventListener('click', function() {
+                adminPanel.classList.remove('hidden');
+                adminPassword.focus();
+            });
+            
+            // Close admin panel
+            closeAdminPanel.addEventListener('click', function() {
+                adminPanel.classList.add('hidden');
+                // Reset the form
+                passwordForm.classList.remove('hidden');
+                dayCreator.classList.add('hidden');
+                adminPassword.value = '';
+                
+                // Reset active tab
+                tabButtons.forEach(btn => btn.classList.remove('active'));
+                tabButtons[0].classList.add('active');
+                tabContents.forEach(tab => tab.classList.remove('active'));
+                tabContents[0].classList.add('active');
+                
+                // Hide preview
+                postPreview.classList.add('hidden');
+            });
+            
+            // Close panel when clicking outside
+            adminPanel.addEventListener('click', function(e) {
+                if (e.target === adminPanel) {
+                    adminPanel.classList.add('hidden');
+                    // Reset the form
+                    passwordForm.classList.remove('hidden');
+                    dayCreator.classList.add('hidden');
+                    adminPassword.value = '';
+                    
+                    // Reset active tab
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    tabButtons[0].classList.add('active');
+                    tabContents.forEach(tab => tab.classList.remove('active'));
+                    tabContents[0].classList.add('active');
+                    
+                    // Hide preview
+                    postPreview.classList.add('hidden');
+                }
+            });
+            
+            // Check password
+            passwordSubmit.addEventListener('click', function() {
+                checkPassword();
+            });
+            
+            // Also check password when pressing Enter
+            adminPassword.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    checkPassword();
+                }
+            });
+            
+            // Password checking function
+            function checkPassword() {
+                if (adminPassword.value === correctPassword) {
+                    // Show day creator form if password is correct
+                    passwordForm.classList.add('hidden');
+                    dayCreator.classList.remove('hidden');
+                } else {
+                    // Show error if password is wrong
+                    adminPassword.style.borderColor = 'red';
+                    setTimeout(() => {
+                        adminPassword.style.borderColor = '';
+                    }, 1500);
+                }
+            }
+            
+            // Handle form submission to create a new day
+            newDayForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Get form values
+                const dayNumber = document.getElementById('day-number').value;
+                const dayLabel = document.getElementById('day-label').value;
+                const dayDate = document.getElementById('day-date').value;
+                const dayCategory = document.getElementById('day-category').value;
+                const dayTitle = document.getElementById('day-title').value;
+                const dayContent = document.getElementById('day-content').value;
+                
+                // Check if a day with this number already exists
+                const existingDay = document.querySelector(`.calendar-day[data-day="${dayNumber}"]`);
+                if (existingDay) {
+                    if (!confirm(`Dag ${dayNumber} bestaat al. Wil je deze overschrijven?`)) {
+                        return; // User canceled overwrite
+                    }
+                    // Remove existing day elements
+                    existingDay.remove();
+                    const existingContent = document.getElementById(`day-${dayNumber}-content`);
+                    if (existingContent) existingContent.remove();
+                }
+                
+                // Create the new calendar day
+                const newCalendarDay = document.createElement('div');
+                newCalendarDay.className = 'calendar-day';
+                newCalendarDay.setAttribute('data-day', dayNumber);
+                newCalendarDay.innerHTML = `
+                    <div class="day-card">
+                        <div class="day-front">
+                            <span class="day-number">${dayNumber}</span>
+                            <span class="day-label">${dayLabel}</span>
+                        </div>
+                    </div>
+                `;
+                
+                // Add the new day to the calendar grid
+                document.querySelector('.calendar-grid').appendChild(newCalendarDay);
+                
+                // Create the content for the new day
+                const newDayContent = document.createElement('article');
+                newDayContent.className = 'blog-post day-content';
+                newDayContent.id = `day-${dayNumber}-content`;
+                newDayContent.innerHTML = `
+                    <div class="post-meta">
+                        <span class="post-date">${dayDate}</span>
+                        <span class="post-category">${dayCategory}</span>
+                        <span class="post-day">Dag ${dayNumber}</span>
+                    </div>
+                    <h2>${dayTitle}</h2>
+                    <div class="post-content">
+                        ${dayContent}
+                    </div>
+                `;
+                
+                // Add the new day content to the content wrapper
+                document.querySelector('.blog-content-wrapper').appendChild(newDayContent);
+                
+                // Add click event to the new day
+                newCalendarDay.addEventListener('click', () => {
+                    showDayContent(dayNumber);
+                });
+                
+                // Reset the form and hide preview
+                newDayForm.reset();
+                postPreview.classList.add('hidden');
+                
+                // Save the new day to localStorage (as a basic way to persist data)
+                saveDayToLocalStorage(dayNumber, dayLabel, dayDate, dayCategory, dayTitle, dayContent);
+                
+                // Show success message and offer to view the new day
+                if (confirm(`Dag ${dayNumber} is succesvol aangemaakt! Wil je deze direct bekijken?`)) {
+                    // Close admin panel
+                    adminPanel.classList.add('hidden');
+                    passwordForm.classList.remove('hidden');
+                    dayCreator.classList.add('hidden');
+                    
+                    // Show the new day
+                    showDayContent(dayNumber);
+                } else {
+                    // Stay in admin panel
+                    // Switch to manage tab to show the updated list
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    tabButtons[1].classList.add('active'); // Select manage tab
+                    tabContents.forEach(tab => tab.classList.remove('active'));
+                    tabContents[1].classList.add('active'); // Show manage tab
+                    
+                    // Refresh the days list
+                    renderDaysList();
+                }
+            });
+            
+            // Function to save day data to localStorage
+            function saveDayToLocalStorage(number, label, date, category, title, content) {
+                const days = JSON.parse(localStorage.getItem('blog-days') || '[]');
+                days.push({
+                    number,
+                    label,
+                    date,
+                    category,
+                    title,
+                    content
+                });
+                localStorage.setItem('blog-days', JSON.stringify(days));
+                
+                // Check empty state after saving day
+                checkAndToggleEmptyState();
+            }
+            
+            // Function to check if there are any days and toggle empty state
+            function checkAndToggleEmptyState() {
+                const calendarGrid = document.getElementById('calendar-grid');
+                const emptyState = document.getElementById('empty-calendar-state');
+                const savedDays = JSON.parse(localStorage.getItem('blog-days') || '[]');
+                const daysInDOM = document.querySelectorAll('.calendar-day').length;
+                
+                if (savedDays.length === 0 && daysInDOM === 0) {
+                    // No days, show empty state
+                    if (emptyState) emptyState.style.display = 'block';
+                    if (calendarGrid) calendarGrid.style.display = 'none';
+                } else {
+                    // Days exist, hide empty state
+                    if (emptyState) emptyState.style.display = 'none';
+                    if (calendarGrid) calendarGrid.style.display = 'grid';
+                }
+            }
+            
+            // Function to load saved days from localStorage
+            function loadSavedDays() {
+                const savedDays = JSON.parse(localStorage.getItem('blog-days') || '[]');
+                
+                savedDays.forEach(day => {
+                    // Check if this day already exists
+                    if (!document.querySelector(`.calendar-day[data-day="${day.number}"]`)) {
+                        // Create the calendar day
+                        const newCalendarDay = document.createElement('div');
+                        newCalendarDay.className = 'calendar-day';
+                        newCalendarDay.setAttribute('data-day', day.number);
+                        newCalendarDay.innerHTML = `
+                            <div class="day-card">
+                                <div class="day-front">
+                                    <span class="day-number">${day.number}</span>
+                                    <span class="day-label">${day.label}</span>
+                                </div>
+                            </div>
+                        `;
+                        
+                        // Add it to the calendar
+                        document.querySelector('.calendar-grid').appendChild(newCalendarDay);
+                        
+                        // Create the content
+                        const newDayContent = document.createElement('article');
+                        newDayContent.className = 'blog-post day-content';
+                        newDayContent.id = `day-${day.number}-content`;
+                        newDayContent.innerHTML = `
+                            <div class="post-meta">
+                                <span class="post-date">${day.date}</span>
+                                <span class="post-category">${day.category}</span>
+                                <span class="post-day">Dag ${day.number}</span>
+                            </div>
+                            <h2>${day.title}</h2>
+                            <div class="post-content">
+                                ${day.content}
+                            </div>
+                        `;
+                        
+                        // Add it to the content wrapper
+                        document.querySelector('.blog-content-wrapper').appendChild(newDayContent);
+                        
+                        // Add click event
+                        newCalendarDay.addEventListener('click', () => {
+                            showDayContent(day.number);
+                        });
+                    }
+                });
+                
+                // Check empty state after loading days
+                checkAndToggleEmptyState();
+            }
+            
+            // Connect the Clear All Days button to its function
+            document.getElementById('clear-all-days').addEventListener('click', clearAllDays);
+            
+            // Connect empty state admin button to open admin panel
+            document.getElementById('empty-state-admin-button').addEventListener('click', function() {
+                adminPanel.classList.remove('hidden');
+                passwordForm.classList.remove('hidden');
+                dayCreator.classList.add('hidden');
+                document.getElementById('admin-password').focus();
+            });
+            
+            // Check empty state when clearing days
+            function updateEmptyStateAfterDelete() {
+                setTimeout(() => {
+                    checkAndToggleEmptyState();
+                }, 100);
+            }
+            
+            // Update clearAllDays function to check empty state
+            const originalClearAllDays = clearAllDays;
+            clearAllDays = function() {
+                originalClearAllDays();
+                updateEmptyStateAfterDelete();
+            };
+            
+            // Update deleteDay function to check empty state
+            const originalDeleteDay = deleteDay;
+            deleteDay = function(dayNumber) {
+                originalDeleteDay(dayNumber);
+                updateEmptyStateAfterDelete();
+            };
+            
+            // Load any saved days when the page loads
+            loadSavedDays();
+            
+            // Initial check for empty state
+            checkAndToggleEmptyState();
+        });
+    </script>
+</body>
+</html>

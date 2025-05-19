@@ -1,0 +1,39 @@
+<!-- CALENDAR DAY TEMPLATE -->
+<!-- Copy this for each new day you want to add to the calendar grid -->
+<div class="calendar-day" data-day="[DAY_NUMBER]">
+    <div class="day-card">
+        <div class="day-front">
+            <span class="day-number">[DAY_NUMBER]</span>
+            <span class="day-label">[SHORT_TITLE]</span>
+        </div>
+    </div>
+</div>
+
+<!-- BLOG CONTENT TEMPLATE -->
+<!-- Copy this for each new day's content -->
+<article class="blog-post day-content" id="day-[DAY_NUMBER]-content">
+    <div class="post-meta">
+        <span class="post-date">[DATE]</span>
+        <span class="post-category">[CATEGORY]</span>
+        <span class="post-day">Dag [DAY_NUMBER]</span>
+    </div>
+    <h2>[FULL_TITLE]</h2>
+    <div class="post-content">
+        <!-- Your content goes here -->
+        <p>[INTRO_PARAGRAPH]</p>
+        
+        <h3>[SECTION_HEADING]</h3>
+        <p>[SECTION_CONTENT]</p>
+        
+        <!-- Add an image if needed -->
+        <div class="post-image">
+            <img src="images/blog/[IMAGE_FILENAME]" alt="[IMAGE_ALT_TEXT]">
+            <p class="image-caption">[IMAGE_CAPTION]</p>
+        </div>
+        
+        <!-- Add code if needed -->
+        <div class="code-block">
+            <pre><code>[YOUR_CODE_HERE]</code></pre>
+        </div>
+    </div>
+</article>

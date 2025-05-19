@@ -44,46 +44,37 @@
     </nav>
 
     <section id="home" class="section">
-        <div class="home-background">
-            <div class="animated-squares"></div>
+        <div class="animated-background">
+            <div class="dot-grid"></div>
         </div>
-        <div class="container fade-in">
+        <div class="container">
             <div class="home-content">
-                <div class="home-text">
-                    <h1 class="animate glitch" data-text="Welkom bij Mijn Portfolio">Welkom bij Mijn Portfolio</h1>
-                    <div class="subtitle-wrapper animate animate-delay-1">
-                        <p class="tagline">
-                            <span class="typed-text"></span>
-                            <span class="cursor">&nbsp;</span>
-                        </p>
-                    </div>
-                    <div class="cta-wrapper animate animate-delay-2">
-                        <a href="assets/CV.pdf" class="cta-button" download>CV Downloaden</a>
-                        <a href="#about" class="secondary-button">Ontdek Meer</a>
-                    </div>
-                </div>
-                <div class="home-visual animate animate-delay-1">
-                    <div class="tech-stack">
-                        <div class="tech-item" style="--delay: 0s;">
+                <div class="home-intro">
+                    <h1 class="animate-title">Owen Samson</h1>
+                    <p class="subtitle">
+                        <span class="typed-text"></span>
+                        <span class="cursor">&nbsp;</span>
+                    </p>
+                    <div class="skills-highlight">
+                        <div class="skill-icon" data-skill="HTML5">
                             <i class="fab fa-html5"></i>
-                            <span>HTML5</span>
                         </div>
-                        <div class="tech-item" style="--delay: 0.1s;">
+                        <div class="skill-icon" data-skill="CSS3">
                             <i class="fab fa-css3-alt"></i>
-                            <span>CSS3</span>
                         </div>
-                        <div class="tech-item" style="--delay: 0.2s;">
+                        <div class="skill-icon" data-skill="JavaScript">
                             <i class="fab fa-js"></i>
-                            <span>JavaScript</span>
                         </div>
-                        <div class="tech-item" style="--delay: 0.3s;">
+                        <div class="skill-icon" data-skill="Python">
                             <i class="fab fa-python"></i>
-                            <span>Python</span>
                         </div>
-                        <div class="tech-item" style="--delay: 0.4s;">
+                        <div class="skill-icon" data-skill="Security">
                             <i class="fas fa-shield-alt"></i>
-                            <span>Security</span>
                         </div>
+                    </div>
+                    <div class="cta-buttons">
+                        <a href="assets/CV.pdf" class="primary-button" download>CV Downloaden</a>
+                        <a href="#about" class="secondary-button">Meer Informatie</a>
                     </div>
                 </div>
             </div>
@@ -98,13 +89,29 @@
                     <img src="images/profile.jpg" alt="Owen Samson" class="profile-pic">
                 </div>
                 <div class="about-text animate animate-delay-1">
-                    <p>Mijn naam is Owen Samson, een 22-jarige softwareontwikkelaar met een passie voor cybersecurity. Momenteel werk ik als winkelmanager en run ik mijn eigen tweedehands kledingbedrijf. Naast mijn werk en studie vind je me vier keer per week in de sportschool—ik geloof in het onderhouden van zowel fysieke als mentale kracht.</p>
+                    <h3 class="about-heading">Software Developer & Cybersecurity Specialist</h3>
                     
-                    <p>Wat mij drijft is mijn analytische denkwijze en mijn vermogen om niet alleen problemen te identificeren, maar ook hun kernoorzaken te ontdekken en efficiënte oplossingen te vinden. Ik geef nooit op, hoe complex de uitdaging ook is. Daarom wil ik me verder specialiseren in cybersecurity, met als uiteindelijk doel het oprichten van mijn eigen cybersecurity bedrijf. Mijn missie is om bedrijven te helpen hun systemen zo effectief mogelijk te beveiligen.</p>
+                    <div class="about-highlights">
+                        <div class="highlight-item">
+                            <i class="fas fa-code"></i>
+                            <span>Developer met focus op veilige, efficiënte code</span>
+                        </div>
+                        <div class="highlight-item">
+                            <i class="fas fa-shield-alt"></i>
+                            <span>Passie voor cybersecurity oplossingen</span>
+                        </div>
+                        <div class="highlight-item">
+                            <i class="fas fa-puzzle-piece"></i>
+                            <span>Analytisch en oplossingsgericht</span>
+                        </div>
+                    </div>
                     
-                    <p>Mensen waarderen mijn eerlijkheid en oplossingsgerichte aanpak. Ik geef altijd een direct en goed onderbouwd antwoord, zelfs als het niet het meest positieve is. Mijn doel is altijd om de beste en meest effectieve oplossing te vinden.</p>
+                    <p>Als 22-jarige software developer combineer ik technische vaardigheden met een scherp oog voor beveiliging. Ik werk aan het opbouwen van mijn expertise in cybersecurity, met de ambitie om uiteindelijk mijn eigen bedrijf te starten.</p>
                     
-                    <p>Wil je samenwerken of meer weten? Voel je vrij om <a href="#contact" class="reach-out-link">contact op te nemen</a>! 🚀</p>
+                    <div class="cta-about">
+                        <a href="#contact" class="about-button">Contact Opnemen</a>
+                        <a href="assets/CV.pdf" class="about-button secondary" download>CV Downloaden</a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -113,40 +120,89 @@
     <section id="education" class="section">
         <div class="container fade-in">
             <h2 class="animate">Opleiding & Werk</h2>
-            <div class="timeline">
-                <div class="timeline-item">
-                    <div class="date">2019 - Heden</div>
-                    <div class="content">
-                        <h3>Sleuteldrager</h3>
-                        <p>Gamma Velserbroek</p>
+            
+            <div class="experience-container">
+                <div class="experience-column work-column animate animate-delay-1">
+                    <div class="column-header">
+                        <i class="fas fa-briefcase"></i>
+                        <h3>Werkervaring</h3>
+                    </div>
+                    
+                    <div class="experience-card">
+                        <div class="card-header">
+                            <div class="exp-icon"><i class="fas fa-key"></i></div>
+                            <div class="exp-title">
+                                <h4>Sleuteldrager</h4>
+                                <p class="company">Gamma Velserbroek</p>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <span class="exp-date">2019 - Heden</span>
+                            <p class="exp-desc">Verantwoordelijk voor openen en sluiten van de winkel en dagelijkse operationele taken.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="experience-card">
+                        <div class="card-header">
+                            <div class="exp-icon"><i class="fas fa-shopping-basket"></i></div>
+                            <div class="exp-title">
+                                <h4>Vakkenvuller</h4>
+                                <p class="company">Albert Heijn Haarlem</p>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <span class="exp-date">2014 - 2019</span>
+                            <p class="exp-desc">Verantwoordelijk voor voorraadbeheer en klantenservice in een drukke supermarkt.</p>
+                        </div>
                     </div>
                 </div>
-                <div class="timeline-item">
-                    <div class="date">2021 - Heden</div>
-                    <div class="content">
-                        <h3>Software Developer</h3>
-                        <p>ROC Nova College</p>
+                
+                <div class="experience-column education-column animate animate-delay-2">
+                    <div class="column-header">
+                        <i class="fas fa-graduation-cap"></i>
+                        <h3>Opleiding</h3>
                     </div>
-                </div>
-                <div class="timeline-item">
-                    <div class="date">2019 - 2021</div>
-                    <div class="content">
-                        <h3>Chemisch-Fysisch Analist</h3>
-                        <p>ROC Nova College</p>
+                    
+                    <div class="experience-card">
+                        <div class="card-header">
+                            <div class="exp-icon"><i class="fas fa-laptop-code"></i></div>
+                            <div class="exp-title">
+                                <h4>Software Developer</h4>
+                                <p class="company">ROC Nova College</p>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <span class="exp-date">2021 - Heden</span>
+                            <p class="exp-desc">Focus op moderne webontwikkeling, cybersecurity en software engineering principes.</p>
+                        </div>
                     </div>
-                </div>
-                <div class="timeline-item">
-                    <div class="date">2015 - 2019</div>
-                    <div class="content">
-                        <h3>Middelbare School</h3>
-                        <p>Duin en Kruidberg Mavo</p>
+                    
+                    <div class="experience-card">
+                        <div class="card-header">
+                            <div class="exp-icon"><i class="fas fa-flask"></i></div>
+                            <div class="exp-title">
+                                <h4>Chemisch-Fysisch Analist</h4>
+                                <p class="company">ROC Nova College</p>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <span class="exp-date">2019 - 2021</span>
+                            <p class="exp-desc">Studie gericht op analytische vaardigheden en laboratoriumtechnieken.</p>
+                        </div>
                     </div>
-                </div>
-                <div class="timeline-item">
-                    <div class="date">2014 - 2019</div>
-                    <div class="content">
-                        <h3>Vakkenvuller</h3>
-                        <p>Albert Heijn Haarlem</p>
+                    
+                    <div class="experience-card">
+                        <div class="card-header">
+                            <div class="exp-icon"><i class="fas fa-school"></i></div>
+                            <div class="exp-title">
+                                <h4>Middelbare School</h4>
+                                <p class="company">Duin en Kruidberg Mavo</p>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <span class="exp-date">2015 - 2019</span>
+                            <p class="exp-desc">Afgerond met focus op bètavakken en technologie.</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -215,75 +271,49 @@
             <div class="projects-grid">
                 <div class="project-card animate animate-delay-1">
                     <div class="project-image">
-                        <img src="images/project-ecommerce.jpg" alt="E-commerce Dashboard">
-                        <div class="project-links">
-                            <a href="https://github.com/yourusername/ecommerce-dashboard" class="project-link" target="_blank">
-                                <i class="fab fa-github"></i>
-                                <span>Broncode</span>
-                            </a>
-                            <a href="https://ecommerce-dashboard-demo.com" class="project-link" target="_blank">
-                                <i class="fas fa-external-link-alt"></i>
-                                <span>Live Demo</span>
-                            </a>
-                        </div>
+                        <img src="images/project-game.jpg" alt="Game Project TBC">
                     </div>
                     <div class="project-content">
-                        <h3>E-commerce Dashboard</h3>
-                        <p>Een full-stack e-commerce analytics dashboard met realtime datavisualisatie en voorraadbeheer. Functies omvatten gebruikersauthenticatie, verkooptracking en geautomatiseerde rapportage.</p>
+                        <h3>TBC - Game Project</h3>
+                        <p>Een creatief gameproject in ontwikkeling. Meer details volgen binnenkort over gameplay, platforms en toegepaste technologieën.</p>
                         <div class="tech-stack">
-                            <span class="tech-tag">Laravel</span>
-                            <span class="tech-tag">Vue.js</span>
-                            <span class="tech-tag">MySQL</span>
-                            <span class="tech-tag">Chart.js</span>
+                            <span class="tech-tag">Unity</span>
+                            <span class="tech-tag">C#</span>
+                            <span class="tech-tag">3D Modeling</span>
+                            <span class="tech-tag">Game Design</span>
                         </div>
+                    </div>
+                    <div class="project-links">
+                        <a href="#" class="project-link">
+                            <i class="fas fa-code"></i>
+                            <span>Binnenkort</span>
+                        </a>
                     </div>
                 </div>
 
                 <div class="project-card animate animate-delay-2">
                     <div class="project-image">
-                        <img src="images/project-security.jpg" alt="Security Scanner">
-                        <div class="project-links">
-                            <a href="https://github.com/yourusername/security-scanner" class="project-link" target="_blank">
-                                <i class="fab fa-github"></i>
-                                <span>Broncode</span>
-                            </a>
-                        </div>
+                        <img src="images/project-ai.jpg" alt="AI/ML voor Rocket League">
                     </div>
                     <div class="project-content">
-                        <h3>Netwerkbeveiligingsscanner</h3>
-                        <p>Een Python-gebaseerde beveiligingstool die automatische kwetsbaarheidstests en poortscans uitvoert. Bevat aangepaste rapportage en integratie met gangbare beveiligingsframeworks.</p>
+                        <h3>AI/ML voor Rocket League</h3>
+                        <p>Een machine learning project gericht op het trainen van een AI-agent om Rocket League te spelen. Volg mijn ontwikkelingsproces, uitdagingen en doorbraken in het bijbehorende blog.</p>
                         <div class="tech-stack">
                             <span class="tech-tag">Python</span>
-                            <span class="tech-tag">Nmap</span>
-                            <span class="tech-tag">SQLite</span>
-                            <span class="tech-tag">Docker</span>
+                            <span class="tech-tag">TensorFlow</span>
+                            <span class="tech-tag">Reinforcement Learning</span>
+                            <span class="tech-tag">Game API</span>
                         </div>
                     </div>
-                </div>
-
-                <div class="project-card animate animate-delay-3">
-                    <div class="project-image">
-                        <img src="images/project-portfolio.jpg" alt="Portfolio Website">
-                        <div class="project-links">
-                            <a href="https://github.com/yourusername/portfolio" class="project-link" target="_blank">
-                                <i class="fab fa-github"></i>
-                                <span>Broncode</span>
-                            </a>
-                            <a href="#" class="project-link">
-                                <i class="fas fa-external-link-alt"></i>
-                                <span>Live Website</span>
-                            </a>
-                        </div>
-                    </div>
-                    <div class="project-content">
-                        <h3>Persoonlijke Portfolio</h3>
-                        <p>Een moderne, responsieve portfolio website gebouwd vanaf scratch. Functies omvatten donker/licht thema wisselen, soepele animaties en geoptimaliseerde prestaties.</p>
-                        <div class="tech-stack">
-                            <span class="tech-tag">HTML5</span>
-                            <span class="tech-tag">CSS3</span>
-                            <span class="tech-tag">JavaScript</span>
-                            <span class="tech-tag">GSAP</span>
-                        </div>
+                    <div class="project-links">
+                        <a href="blog.html" class="project-link">
+                            <i class="fas fa-book"></i>
+                            <span>Blog</span>
+                        </a>
+                        <a href="https://github.com/yourusername/rocket-league-ai" class="project-link" target="_blank">
+                            <i class="fab fa-github"></i>
+                            <span>Broncode</span>
+                        </a>
                     </div>
                 </div>
             </div>

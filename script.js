@@ -94,6 +94,95 @@ themeToggle.addEventListener('change', () => {
     localStorage.setItem('theme', theme);
 });
 
+// Home section animations and interactive elements
+document.addEventListener('DOMContentLoaded', () => {
+    // Title animation
+    const title = document.querySelector('.animate-title');
+    if (title) {
+        // Add subtle entrance animation
+        setTimeout(() => {
+            title.style.animation = 'fadeInUp 1s forwards';
+        }, 300);
+    }
+
+    // Typing animation - improved implementation
+    const typedTextElement = document.querySelector('.typed-text');
+    const cursorElement = document.querySelector('.cursor');
+    
+    if (typedTextElement && cursorElement) {
+        // Clear any existing content to ensure a fresh start
+        typedTextElement.textContent = '';
+        
+        const textArray = [
+            'Software Ontwikkelaar',
+            'Cybersecurity Specialist',
+            'Full Stack Ontwikkelaar',
+            'Creatieve Web Bouwer',
+            'Hobby Game Ontwikkelaar',
+            'UI/UX Minimalist',
+            'Probleemoplosser'
+        ];
+        const typingDelay = 80;  // Slightly faster typing
+        const erasingDelay = 40; // Slightly faster erasing
+        const newTextDelay = 2000;
+        let textArrayIndex = 0;
+        let charIndex = 0;
+        let isTyping = false;
+        
+        function type() {
+            isTyping = true;
+            if (charIndex < textArray[textArrayIndex].length) {
+                typedTextElement.textContent += textArray[textArrayIndex].charAt(charIndex);
+                charIndex++;
+                setTimeout(type, typingDelay);
+            } else {
+                isTyping = false;
+                // Make sure the cursor keeps blinking
+                cursorElement.style.display = 'inline-block';
+                setTimeout(erase, newTextDelay);
+            }
+        }
+        
+        function erase() {
+            isTyping = true;
+            if (charIndex > 0) {
+                typedTextElement.textContent = textArray[textArrayIndex].substring(0, charIndex - 1);
+                charIndex--;
+                setTimeout(erase, erasingDelay);
+            } else {
+                isTyping = false;
+                textArrayIndex++;
+                if (textArrayIndex >= textArray.length) textArrayIndex = 0;
+                setTimeout(type, 700); // Shorter pause before starting next word
+            }
+        }
+        
+        // Start the typing animation with a short delay to ensure DOM is ready
+        setTimeout(() => {
+            cursorElement.style.display = 'inline-block';
+            type();
+        }, 1000);
+    }
+    
+    // Skill icons animation
+    const skillIcons = document.querySelectorAll('.skill-icon');
+    
+    skillIcons.forEach((icon, index) => {
+        // Apply staggered entrance animation
+        icon.style.opacity = '0';
+        icon.style.transform = 'translateY(20px)';
+        
+        setTimeout(() => {
+            icon.style.transition = 'all 0.4s ease';
+            icon.style.opacity = '1';
+            icon.style.transform = 'translateY(0)';
+        }, 500 + (index * 100));
+    });
+    
+    // Render the technical skills section
+    renderSkills();
+});
+
 // Skills Configuration - Easy to edit
 const skillsConfig = {
     categories: [
@@ -120,12 +209,40 @@ const skillsConfig = {
     ]
 };
 
+// Function to render stars based on skill level (max 5 stars)
+const renderStars = (level) => {
+    // Convert level percentage to stars (out of 5)
+    const fullStars = Math.floor(level / 20);
+    const halfStar = level % 20 >= 10 ? 1 : 0;
+    const emptyStars = 5 - fullStars - halfStar;
+    
+    let starsHTML = '';
+    
+    // Add full stars
+    for (let i = 0; i < fullStars; i++) {
+        starsHTML += '<i class="fas fa-star"></i>';
+    }
+    
+    // Add half star if needed
+    if (halfStar) {
+        starsHTML += '<i class="fas fa-star-half-alt"></i>';
+    }
+    
+    // Add empty stars
+    for (let i = 0; i < emptyStars; i++) {
+        starsHTML += '<i class="far fa-star"></i>';
+    }
+    
+    return starsHTML;
+};
+
 // Function to get skill level text based on percentage
 const getSkillLevel = (level) => {
-    if (level >= 90) return 'Advanced';
-    if (level >= 75) return 'Proficient';
-    if (level >= 60) return 'Intermediate';
-    return 'Basic';
+    if (level >= 90) return 'Expert';
+    if (level >= 75) return 'Gevorderd';
+    if (level >= 60) return 'Bekwaam';
+    if (level >= 40) return 'Basis';
+    return 'Beginner';
 };
 
 // Function to render skills
@@ -139,14 +256,14 @@ const renderSkills = () => {
                 <i class="fas ${category.icon}"></i>
                 <h3>${category.name}</h3>
             </div>
-            <div class="skills-grid">
+            <div class="skills-cards">
                 ${category.skills.map(skill => `
-                    <div class="skill-item" data-skill="${skill.name}" data-level="${skill.level}">
-                        <div class="skill-info">
-                            <span class="skill-name">${skill.name}</span>
-                            <span class="skill-level">${getSkillLevel(skill.level)}</span>
+                    <div class="skill-card">
+                        <div class="skill-card-inner">
+                            <div class="skill-name">${skill.name}</div>
+                            <div class="skill-stars">${renderStars(skill.level)}</div>
+                            <div class="skill-level">${getSkillLevel(skill.level)}</div>
                         </div>
-                        <div class="skill-bar"></div>
                     </div>
                 `).join('')}
             </div>
@@ -197,20 +314,6 @@ const skillsObserver = new IntersectionObserver(animateSkills, {
 skillItems.forEach(item => {
     skillsObserver.observe(item);
 });
-
-// Typing animation
-const typedTextSpan = document.querySelector('.typed-text');
-const cursor = document.querySelector('.cursor');
-
-const roles = [
-    'Software Ontwikkelaar',
-    'Cybersecurity Specialist',
-    'Full Stack Ontwikkelaar',
-    'Creatieve Web Bouwer',
-    'Hobby Game Ontwikkelaar',
-    'UI/UX Minimalist',
-    'Probleemoplosser'
-];
 
 // Back to top button functionality
 const backToTopButton = document.getElementById('back-to-top');
@@ -326,14 +429,6 @@ function typeEffect() {
     const typingSpeed = isDeleting ? 50 : 100; // Faster deletion, slower typing
     setTimeout(typeEffect, typingSpeed);
 }
-
-// Start the typing animation when the page loads
-document.addEventListener('DOMContentLoaded', () => {
-    if (typedTextSpan) {
-        setTimeout(typeEffect, 1000); // Start after 1 second
-    }
-    renderSkills();
-});
 
 // Mouse tracking for hobby cards
 document.addEventListener('DOMContentLoaded', () => {
