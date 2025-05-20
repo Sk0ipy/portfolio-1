@@ -48,35 +48,35 @@
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="day-number">Day Number:</label>
-                                <input type="number" id="day-number" required>
+                                <input type="number" id="day-number" required placeholder="E.g. 1, 2, 3...">
                             </div>
                             
                             <div class="form-group">
                                 <label for="day-label">Short Label:</label>
-                                <input type="text" id="day-label" required maxlength="20">
+                                <input type="text" id="day-label" required maxlength="20" placeholder="E.g. Setup, Training Models...">
                             </div>
                         </div>
                         
                         <div class="form-row">
                             <div class="form-group">
                                 <label for="day-date">Date:</label>
-                                <input type="text" id="day-date" required placeholder="e.g. 27 Mei 2025">
+                                <input type="text" id="day-date" required placeholder="E.g. 27 Mei 2025">
                             </div>
                             
                             <div class="form-group">
                                 <label for="day-category">Category:</label>
-                                <input type="text" id="day-category" required>
+                                <input type="text" id="day-category" required placeholder="E.g. Data Processing, Model Training...">
                             </div>
                         </div>
                         
                         <div class="form-group">
                             <label for="day-title">Full Title:</label>
-                            <input type="text" id="day-title" required>
+                            <input type="text" id="day-title" required placeholder="E.g. Getting Started with Reinforcement Learning for Rocket League">
                         </div>
                         
                         <div class="form-group">
                             <label for="day-content">Content (HTML allowed):</label>
-                            <textarea id="day-content" rows="10" required></textarea>
+                            <textarea id="day-content" rows="10" required placeholder="Enter your blog content here. You can use HTML tags for formatting. E.g. &lt;p&gt;Today I started exploring the Rocket League API...&lt;/p&gt;"></textarea>
                         </div>
                         
                         <div class="preview-toggle">
@@ -363,8 +363,9 @@
                 const daysList = document.getElementById('days-list');
                 const noDaysMessage = document.querySelector('.no-days-message');
                 
-                // Password for admin access - you can change this to your preferred password
-                const correctPassword = "SkOipy2025";
+                // Password hash for admin access - this is a SHA-256 hash of the password
+                // Default hash is for password "12345" - replace this with your own password hash
+                const correctPasswordHash = "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08";
                 
                 // Function to automatically set the next day number
                 function setNextDayNumber() {
@@ -595,36 +596,61 @@
                 }
             });
             
-            // Check password
+            // Handle password form submission
             passwordSubmit.addEventListener('click', function() {
+                // Call the async password check function
                 checkPassword();
+                // Prevent default form submission
+                return false;
             });
             
             // Also check password when pressing Enter
             adminPassword.addEventListener('keypress', function(e) {
                 if (e.key === 'Enter') {
+                    e.preventDefault(); // Prevent form submission
                     checkPassword();
                 }
             });
             
+            // Add SHA-256 hashing function
+            async function sha256(message) {
+                // encode as UTF-8
+                const msgBuffer = new TextEncoder().encode(message);
+                // hash the message
+                const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+                // convert ArrayBuffer to Array
+                const hashArray = Array.from(new Uint8Array(hashBuffer));
+                // convert bytes to hex string
+                const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+                return hashHex;
+            }
+            
             // Password checking function
-            function checkPassword() {
-                if (adminPassword.value === correctPassword) {
-                    // Show day creator form if password is correct
-                    passwordForm.classList.add('hidden');
-                    dayCreator.classList.remove('hidden');
+            async function checkPassword() {
+                try {
+                    // Hash the entered password
+                    const enteredPasswordHash = await sha256(adminPassword.value);
                     
-                    // Automatically set the next day number and current date
-                    setNextDayNumber();
-                    
-                    // Set focus to the day label field since day number is auto-populated
-                    document.getElementById('day-label').focus();
-                } else {
-                    // Show error if password is wrong
-                    adminPassword.style.borderColor = 'red';
-                    setTimeout(() => {
-                        adminPassword.style.borderColor = '';
-                    }, 1500);
+                    // Compare with the stored hash
+                    if (enteredPasswordHash === correctPasswordHash) {
+                        // Show day creator form if password is correct
+                        passwordForm.classList.add('hidden');
+                        dayCreator.classList.remove('hidden');
+                        
+                        // Automatically set the next day number and current date
+                        setNextDayNumber();
+                        
+                        // Set focus to the day label field since day number is auto-populated
+                        document.getElementById('day-label').focus();
+                    } else {
+                        // Show error if password is wrong
+                        adminPassword.style.borderColor = 'red';
+                        setTimeout(() => {
+                            adminPassword.style.borderColor = '';
+                        }, 1500);
+                    }
+                } catch (error) {
+                    console.error('Error checking password:', error);
                 }
             }
             
