@@ -1,0 +1,55 @@
+/* Profile Image Responsive Fixes */
+@media (max-width: 768px) {
+    /* Better responsive handling for the profile image */
+    .profile-image {
+        flex: 0 0 auto !important;
+        width: 220px !important;
+        height: auto !important;
+        margin: 0 auto 2rem auto !important;
+    }
+    
+    .profile-pic {
+        width: 100% !important;
+        height: auto !important;
+        object-fit: cover !important;
+        border-radius: 10px !important;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15) !important;
+    }
+}
+
+/* Even smaller screens */
+@media (max-width: 480px) {
+    .profile-image {
+        width: 180px !important;
+    }
+    
+    .about-content {
+        padding: 0 1rem !important;
+    }
+}
+
+/* Fix duplicate profile image and text styles */
+.profile-image {
+    flex: 0 0 300px;
+    margin-right: 3rem;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* Improve overall responsiveness of About section */
+@media (max-width: 768px) {
+    .about-heading {
+        font-size: 1.5rem !important;
+        margin-bottom: 1.2rem !important;
+    }
+    
+    .highlight-item {
+        padding: 0.7rem 1rem !important;
+    }
+    
+    .about-text p {
+        font-size: 1rem !important;
+        line-height: 1.6 !important;
+    }
+}

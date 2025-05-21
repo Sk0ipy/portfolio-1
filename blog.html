@@ -11,7 +11,16 @@
     <link rel="manifest" href="images/favicon/site.webmanifest">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="blog-styles.css">
+    <link rel="stylesheet" href="blog-icon-fix.css">
+    <link rel="stylesheet" href="blog-loader.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Firebase SDK -->
+    <script type="module" src="firebase-blog.js"></script>
+    <!-- Firebase debug and fix script -->
+    <script type="module" src="firebase-debug.js"></script>
+    <!-- Admin login script -->
+    <script src="admin-login.js" defer></script>
 </head>
 <body>
     <div class="theme-switch">
@@ -368,24 +377,32 @@
                 const correctPasswordHash = "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08";
                 
                 // Function to automatically set the next day number
-                function setNextDayNumber() {
-                    const savedDays = JSON.parse(localStorage.getItem('blog-days') || '[]');
-                    let nextDayNumber = 1;
-                    
-                    if (savedDays.length > 0) {
-                        // Find the maximum day number and add 1
-                        const dayNumbers = savedDays.map(day => parseInt(day.number));
-                        nextDayNumber = Math.max(...dayNumbers) + 1;
+                async function setNextDayNumber() {
+                    try {
+                        // Import Firebase functions
+                        const { loadBlogsFromFirebase } = await import('./firebase-blog.js');
+                        
+                        // Get saved days from Firebase
+                        const days = await loadBlogsFromFirebase();
+                        let nextDayNumber = 1;
+                        
+                        if (Object.keys(days).length > 0) {
+                            // Find the maximum day number and add 1
+                            const dayNumbers = Object.keys(days).map(day => parseInt(day));
+                            nextDayNumber = Math.max(...dayNumbers) + 1;
+                        }
+                        
+                        // Set the value in the form
+                        document.getElementById('day-number').value = nextDayNumber;
+                        
+                        // Also set today's date as default
+                        const today = new Date();
+                        const months = ['Januari', 'Februari', 'Maart', 'April', 'Mei', 'Juni', 'Juli', 'Augustus', 'September', 'Oktober', 'November', 'December'];
+                        const dateString = `${today.getDate()} ${months[today.getMonth()]} ${today.getFullYear()}`;
+                        document.getElementById('day-date').value = dateString;
+                    } catch (error) {
+                        console.error('Error setting next day number:', error);
                     }
-                    
-                    // Set the value in the form
-                    document.getElementById('day-number').value = nextDayNumber;
-                    
-                    // Also set today's date as default
-                    const today = new Date();
-                    const months = ['Januari', 'Februari', 'Maart', 'April', 'Mei', 'Juni', 'Juli', 'Augustus', 'September', 'Oktober', 'November', 'December'];
-                    const dateString = `${today.getDate()} ${months[today.getMonth()]} ${today.getFullYear()}`;
-                    document.getElementById('day-date').value = dateString;
                 }
                 
                 // Tab switching functionality
@@ -437,228 +454,238 @@
                 postPreview.scrollIntoView({ behavior: 'smooth', block: 'start' });
             });
             
-            // Function to render the list of days in the manage tab
-            function renderDaysList() {
-                // Clear existing list
-                daysList.innerHTML = '';
-                
-                // Get saved days from localStorage
-                const savedDays = JSON.parse(localStorage.getItem('blog-days') || '[]');
-                
-                // Show message if there are no days
-                if (savedDays.length === 0) {
-                    noDaysMessage.classList.remove('hidden');
-                } else {
-                    noDaysMessage.classList.add('hidden');
+            // The Firebase version of showDayContent function
+            async function showDayContent(dayNumber) {
+                try {
+                    // Import Firebase functions
+                    const { loadBlogsFromFirebase } = await import('./firebase-blog.js');
                     
-                    // Create list items for each day
-                    savedDays.forEach(day => {
-                        const dayItem = document.createElement('div');
-                        dayItem.className = 'day-item';
-                        dayItem.innerHTML = `
+                    // Get saved days from Firebase
+                    const days = await loadBlogsFromFirebase();
+                    
+                    // Check if the day exists
+                    if (!days[dayNumber]) {
+                        alert('Day not found!');
+                        return;
+                    }
+                    
+                    const day = days[dayNumber];
+                    
+                    // Hide calendar and show blog content section
+                    document.querySelector('.project-calendar').classList.add('hidden');
+                    document.querySelector('.blog-content-wrapper').classList.remove('hidden');
+                    
+                    // Populate blog post content
+                    const blogPostContent = document.querySelector('.blog-post-content');
+                    
+                    blogPostContent.innerHTML = `
+                        <div class="blog-post-header">
+                            <div class="day-indicator">Day ${dayNumber}</div>
+                            <div class="day-label">${day.label}</div>
+                        </div>
+                        <div class="blog-post-meta">
+                            <span class="blog-date">${day.date}</span>
+                            <span class="blog-category">${day.category}</span>
+                        </div>
+                        <h2 class="blog-post-title">${day.title}</h2>
+                        <div class="blog-post-body">${day.content}</div>
+                    `;
+                    
+                    // Scroll to top
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                } catch (error) {
+                    console.error('Error showing day content:', error);
+                    alert('Error loading blog content: ' + error.message);
+                }
+            }
+            
+            // Function to render the list of days in the manage tab
+            async function renderDaysList() {
+                try {
+                    // Import Firebase functions
+                    const { loadBlogsFromFirebase } = await import('./firebase-blog.js');
+                    
+                    // Get saved days from Firebase
+                    const days = await loadBlogsFromFirebase();
+                    
+                    // Get list container
+                    const daysList = document.getElementById('days-list');
+                    const noDaysMessage = document.querySelector('.no-days-message');
+                    
+                    // Clear existing list
+                    daysList.innerHTML = '';
+                    
+                    // Check if there are any days
+                    const dayNumbers = Object.keys(days);
+                    
+                    if (dayNumbers.length === 0) {
+                        noDaysMessage.classList.remove('hidden');
+                        return;
+                    } else {
+                        noDaysMessage.classList.add('hidden');
+                    }
+                    
+                    // Sort day numbers numerically
+                    dayNumbers.sort((a, b) => parseInt(a) - parseInt(b));
+                    
+                    // Create list items
+                    dayNumbers.forEach(dayNumber => {
+                        const day = days[dayNumber];
+                        
+                        const listItem = document.createElement('div');
+                        listItem.className = 'day-list-item';
+                        
+                        listItem.innerHTML = `
                             <div class="day-info">
-                                <div class="day-number-badge">${day.number}</div>
-                                <div class="day-title-info">
-                                    <h5>${day.title}</h5>
-                                    <span class="day-date-info">${day.date} • ${day.category}</span>
-                                </div>
+                                <div class="day-number">Day ${dayNumber}</div>
+                                <div class="day-title">${day.title}</div>
                             </div>
                             <div class="day-actions">
-                                <button class="delete-day" data-day="${day.number}"><i class="fas fa-trash"></i> Verwijderen</button>
+                                <button class="delete-day-btn" data-day="${dayNumber}">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
                             </div>
                         `;
                         
-                        daysList.appendChild(dayItem);
+                        daysList.appendChild(listItem);
                     });
                     
-                    // Add event listeners for delete buttons
-                    document.querySelectorAll('.delete-day').forEach(button => {
+                    // Add event listeners to delete buttons
+                    document.querySelectorAll('.delete-day-btn').forEach(button => {
                         button.addEventListener('click', function() {
                             const dayNumber = this.getAttribute('data-day');
                             deleteDay(dayNumber);
                         });
                     });
+                } catch (error) {
+                    console.error('Error rendering days list:', error);
+                    // Don't show alert here to prevent overwhelming the user with errors
                 }
             }
             
             // Function to delete a day
-            function deleteDay(dayNumber) {
+            async function deleteDay(dayNumber) {
                 // Confirm deletion
-                if (confirm(`Weet je zeker dat je dag ${dayNumber} wilt verwijderen?`)) {
-                    // Get saved days from localStorage
-                    const savedDays = JSON.parse(localStorage.getItem('blog-days') || '[]');
+                if (!confirm(`Are you sure you want to delete Day ${dayNumber}?`)) {
+                    return; // User cancelled
+                }
+                
+                try {
+                    // Import Firebase functions
+                    const { loadBlogsFromFirebase, deleteBlogFromFirebase } = await import('./firebase-blog.js');
                     
-                    // Filter out the day to delete
-                    const updatedDays = savedDays.filter(day => day.number !== dayNumber);
+                    // Get saved days from Firebase
+                    const days = await loadBlogsFromFirebase();
                     
-                    // Save updated list back to localStorage
-                    localStorage.setItem('blog-days', JSON.stringify(updatedDays));
+                    // Check if the day exists
+                    if (!days[dayNumber]) {
+                        alert('Day not found!');
+                        return;
+                    }
                     
-                    // Remove day from DOM
+                    // Show loading state
                     const calendarDay = document.querySelector(`.calendar-day[data-day="${dayNumber}"]`);
-                    const dayContent = document.getElementById(`day-${dayNumber}-content`);
+                    if (calendarDay) {
+                        calendarDay.classList.add('deleting');
+                    }
                     
-                    if (calendarDay) calendarDay.remove();
-                    if (dayContent) dayContent.remove();
+                    // Get the document ID
+                    const dayId = days[dayNumber].id;
                     
-                    // Re-render days list
-                    renderDaysList();
+                    // Delete from Firebase
+                    const success = await deleteBlogFromFirebase(dayId);
                     
-                    // Show success message
-                    alert(`Dag ${dayNumber} is verwijderd!`);
+                    if (success) {
+                        // Refresh the days list
+                        renderDaysList();
+                        
+                        // Refresh the calendar
+                        await loadSavedDays();
+                        
+                        // Update empty state
+                        checkAndToggleEmptyState();
+                    } else {
+                        alert('Error deleting blog day.');
+                    }
+                } catch (error) {
+                    console.error('Error deleting day:', error);
+                    alert('Error deleting blog day: ' + error.message);
                 }
             }
             
             // Function to clear all days
-            function clearAllDays() {
-                // Count how many days there are
-                const savedDays = JSON.parse(localStorage.getItem('blog-days') || '[]');
-                const dayCount = savedDays.length;
-                
-                if (dayCount === 0) {
-                    alert('Er zijn geen dagen om te verwijderen.');
-                    return;
-                }
-                
-                // Confirm deletion with specific count
-                if (confirm(`Weet je zeker dat je alle ${dayCount} dagen wilt verwijderen? Dit kan niet ongedaan worden gemaakt!`)) {
-                    // Double-check with an extra confirmation for safety
-                    if (confirm(`Laatste waarschuwing! Dit verwijdert alle ${dayCount} dagen permanent.`)) {
-                        // Clear localStorage
-                        localStorage.removeItem('blog-days');
+            async function clearAllDays() {
+                try {
+                    // Import Firebase functions
+                    const { loadBlogsFromFirebase, clearAllBlogsFromFirebase } = await import('./firebase-blog.js');
+                    
+                    // Get saved days from Firebase
+                    const days = await loadBlogsFromFirebase();
+                    const count = Object.keys(days).length;
+                    
+                    if (count === 0) {
+                        alert('No blog days to clear.');
+                        return;
+                    }
+                    
+                    // Confirm deletion with specific count
+                    if (!confirm(`Are you sure you want to delete ALL ${count} blog days? This cannot be undone!`)) {
+                        return; // User cancelled
+                    }
+                    
+                    // Extra security confirmation
+                    const secondConfirm = prompt(`Type "DELETE ALL" to confirm that you want to permanently delete all ${count} blog days.`);
+                    
+                    if (secondConfirm !== "DELETE ALL") {
+                        alert('Operation cancelled.');
+                        return;
+                    }
+                    
+                    // Show loading state
+                    const clearButton = document.getElementById('clear-all-days');
+                    const originalButtonText = clearButton.innerHTML;
+                    clearButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Deleting...';
+                    clearButton.disabled = true;
+                    
+                    // Clear from Firebase
+                    const success = await clearAllBlogsFromFirebase();
+                    
+                    if (success) {
+                        // Clear the calendar grid and update UI
+                        document.getElementById('calendar-grid').innerHTML = '';
                         
-                        // Remove all calendar days from DOM
-                        document.querySelectorAll('.calendar-day').forEach(day => {
-                            day.remove();
-                        });
-                        
-                        // Remove all day content from DOM
-                        document.querySelectorAll('.blog-post.day-content').forEach(content => {
-                            content.remove();
-                        });
-                        
-                        // Re-render days list
+                        // Refresh the days list
                         renderDaysList();
                         
-                        // Show success animation and message
-                        const listContainer = document.getElementById('days-list-container');
-                        listContainer.classList.add('deletion-animation');
+                        // Reset the day number in form
+                        document.getElementById('day-number').value = '1';
                         
-                        setTimeout(() => {
-                            listContainer.classList.remove('deletion-animation');
-                            alert('Alle dagen zijn succesvol verwijderd!');
-                        }, 500);
-                    }
-                }
-            }
-            
-            // Open admin panel
-            adminButton.addEventListener('click', function() {
-                adminPanel.classList.remove('hidden');
-                adminPassword.focus();
-            });
-            
-            // Close admin panel
-            closeAdminPanel.addEventListener('click', function() {
-                adminPanel.classList.add('hidden');
-                // Reset the form
-                passwordForm.classList.remove('hidden');
-                dayCreator.classList.add('hidden');
-                adminPassword.value = '';
-                
-                // Reset active tab
-                tabButtons.forEach(btn => btn.classList.remove('active'));
-                tabButtons[0].classList.add('active');
-                tabContents.forEach(tab => tab.classList.remove('active'));
-                tabContents[0].classList.add('active');
-                
-                // Hide preview
-                postPreview.classList.add('hidden');
-            });
-            
-            // Close panel when clicking outside
-            adminPanel.addEventListener('click', function(e) {
-                if (e.target === adminPanel) {
-                    adminPanel.classList.add('hidden');
-                    // Reset the form
-                    passwordForm.classList.remove('hidden');
-                    dayCreator.classList.add('hidden');
-                    adminPassword.value = '';
-                    
-                    // Reset active tab
-                    tabButtons.forEach(btn => btn.classList.remove('active'));
-                    tabButtons[0].classList.add('active');
-                    tabContents.forEach(tab => tab.classList.remove('active'));
-                    tabContents[0].classList.add('active');
-                    
-                    // Hide preview
-                    postPreview.classList.add('hidden');
-                }
-            });
-            
-            // Handle password form submission
-            passwordSubmit.addEventListener('click', function() {
-                // Call the async password check function
-                checkPassword();
-                // Prevent default form submission
-                return false;
-            });
-            
-            // Also check password when pressing Enter
-            adminPassword.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    e.preventDefault(); // Prevent form submission
-                    checkPassword();
-                }
-            });
-            
-            // Add SHA-256 hashing function
-            async function sha256(message) {
-                // encode as UTF-8
-                const msgBuffer = new TextEncoder().encode(message);
-                // hash the message
-                const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
-                // convert ArrayBuffer to Array
-                const hashArray = Array.from(new Uint8Array(hashBuffer));
-                // convert bytes to hex string
-                const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-                return hashHex;
-            }
-            
-            // Password checking function
-            async function checkPassword() {
-                try {
-                    // Hash the entered password
-                    const enteredPasswordHash = await sha256(adminPassword.value);
-                    
-                    // Compare with the stored hash
-                    if (enteredPasswordHash === correctPasswordHash) {
-                        // Show day creator form if password is correct
-                        passwordForm.classList.add('hidden');
-                        dayCreator.classList.remove('hidden');
+                        // Show success message
+                        alert('All blog days have been deleted.');
                         
-                        // Automatically set the next day number and current date
-                        setNextDayNumber();
-                        
-                        // Set focus to the day label field since day number is auto-populated
-                        document.getElementById('day-label').focus();
+                        // Update empty state
+                        checkAndToggleEmptyState();
                     } else {
-                        // Show error if password is wrong
-                        adminPassword.style.borderColor = 'red';
-                        setTimeout(() => {
-                            adminPassword.style.borderColor = '';
-                        }, 1500);
+                        alert('Error deleting all blog days.');
                     }
                 } catch (error) {
-                    console.error('Error checking password:', error);
+                    console.error('Error clearing all days:', error);
+                    alert('Error deleting all blog days: ' + error.message);
+                } finally {
+                    // Restore button state
+                    const clearButton = document.getElementById('clear-all-days');
+                    clearButton.innerHTML = '<i class="fas fa-trash-alt"></i> Verwijder Alle Dagen';
+                    clearButton.disabled = false;
                 }
             }
             
             // Handle form submission to create a new day
-            newDayForm.addEventListener('submit', function(e) {
+            newDayForm.addEventListener('submit', async function(e) {
                 e.preventDefault();
                 
-                // Get form values
                 const dayNumber = document.getElementById('day-number').value;
                 const dayLabel = document.getElementById('day-label').value;
                 const dayDate = document.getElementById('day-date').value;
@@ -666,112 +693,77 @@
                 const dayTitle = document.getElementById('day-title').value;
                 const dayContent = document.getElementById('day-content').value;
                 
-                // Check if a day with this number already exists
-                const existingDay = document.querySelector(`.calendar-day[data-day="${dayNumber}"]`);
-                if (existingDay) {
-                    if (!confirm(`Dag ${dayNumber} bestaat al. Wil je deze overschrijven?`)) {
-                        return; // User canceled overwrite
-                    }
-                    // Remove existing day elements
-                    existingDay.remove();
-                    const existingContent = document.getElementById(`day-${dayNumber}-content`);
-                    if (existingContent) existingContent.remove();
-                }
+                // Show loading state
+                const createBtn = document.getElementById('create-day-btn');
+                const originalBtnText = createBtn.textContent;
+                createBtn.textContent = 'Saving...';
+                createBtn.disabled = true;
                 
-                // Create the new calendar day
-                const newCalendarDay = document.createElement('div');
-                newCalendarDay.className = 'calendar-day';
-                newCalendarDay.setAttribute('data-day', dayNumber);
-                newCalendarDay.innerHTML = `
-                    <div class="day-card">
-                        <div class="day-front">
-                            <span class="day-number">${dayNumber}</span>
+                try {
+                    // Import Firebase functions
+                    const { saveDayToFirebase } = await import('./firebase-blog.js');
+                    
+                    // Save to Firebase
+                    const success = await saveDayToFirebase(dayNumber, dayLabel, dayDate, dayCategory, dayTitle, dayContent);
+                    
+                    if (success) {
+                        // Create the calendar day
+                        const calendarGrid = document.getElementById('calendar-grid');
+                        const dayElement = document.createElement('div');
+                        dayElement.className = 'calendar-day';
+                        dayElement.setAttribute('data-day', dayNumber);
+                        
+                        dayElement.innerHTML = `
+                            <span class="day-number">Day ${dayNumber}</span>
                             <span class="day-label">${dayLabel}</span>
-                        </div>
-                    </div>
-                `;
-                
-                // Add the new day to the calendar grid
-                document.querySelector('.calendar-grid').appendChild(newCalendarDay);
-                
-                // Create the content for the new day
-                const newDayContent = document.createElement('article');
-                newDayContent.className = 'blog-post day-content';
-                newDayContent.id = `day-${dayNumber}-content`;
-                newDayContent.innerHTML = `
-                    <div class="post-meta">
-                        <span class="post-date">${dayDate}</span>
-                        <span class="post-category">${dayCategory}</span>
-                        <span class="post-day">Dag ${dayNumber}</span>
-                    </div>
-                    <h2>${dayTitle}</h2>
-                    <div class="post-content">
-                        ${dayContent}
-                    </div>
-                `;
-                
-                // Add the new day content to the content wrapper
-                document.querySelector('.blog-content-wrapper').appendChild(newDayContent);
-                
-                // Add click event to the new day
-                newCalendarDay.addEventListener('click', () => {
-                    showDayContent(dayNumber);
-                });
-                
-                // Reset the form and hide preview
-                newDayForm.reset();
-                postPreview.classList.add('hidden');
-                
-                // Save the new day to localStorage (as a basic way to persist data)
-                saveDayToLocalStorage(dayNumber, dayLabel, dayDate, dayCategory, dayTitle, dayContent);
-                
-                // Show success message and offer to view the new day
-                if (confirm(`Dag ${dayNumber} is succesvol aangemaakt! Wil je deze direct bekijken?`)) {
-                    // Close admin panel
-                    adminPanel.classList.add('hidden');
-                    passwordForm.classList.remove('hidden');
-                    dayCreator.classList.add('hidden');
-                    
-                    // Show the new day
-                    showDayContent(dayNumber);
-                } else {
-                    // Stay in admin panel
-                    // Switch to manage tab to show the updated list
-                    tabButtons.forEach(btn => btn.classList.remove('active'));
-                    tabButtons[1].classList.add('active'); // Select manage tab
-                    tabContents.forEach(tab => tab.classList.remove('active'));
-                    tabContents[1].classList.add('active'); // Show manage tab
-                    
-                    // Refresh the days list
-                    renderDaysList();
+                        `;
+                        
+                        calendarGrid.appendChild(dayElement);
+                        
+                        // Add click event
+                        dayElement.addEventListener('click', () => {
+                            showDayContent(dayNumber);
+                        });
+                        
+                        // Reset form
+                        document.getElementById('new-day-form').reset();
+                        setNextDayNumber();
+                        
+                        // Update empty state
+                        checkAndToggleEmptyState();
+                        
+                        // Close admin panel
+                        adminPanel.classList.add('hidden');
+                        
+                        // Show success message
+                        alert('Day ' + dayNumber + ' created successfully!');
+                    } else {
+                        alert('Error saving blog day to Firebase.');
+                    }
+                } catch (error) {
+                    console.error('Error saving blog day:', error);
+                    alert('Error saving blog day: ' + error.message);
+                } finally {
+                    // Restore button state
+                    createBtn.textContent = originalBtnText;
+                    createBtn.disabled = false;
                 }
             });
             
-            // Function to save day data to localStorage
+            // Function to save day data (previously using localStorage, now using Firebase)
             function saveDayToLocalStorage(number, label, date, category, title, content) {
-                const days = JSON.parse(localStorage.getItem('blog-days') || '[]');
-                days.push({
-                    number,
-                    label,
-                    date,
-                    category,
-                    title,
-                    content
-                });
-                localStorage.setItem('blog-days', JSON.stringify(days));
-                
-                // Check empty state after saving day
-                checkAndToggleEmptyState();
+                // This function is kept for backward compatibility
+                // The actual saving is now done in the form submission handler using Firebase
+                console.log('Using Firebase instead of localStorage');
             }
             
             // Function to check if there are any days and toggle empty state
             function checkAndToggleEmptyState() {
                 const calendarGrid = document.getElementById('calendar-grid');
                 const emptyState = document.getElementById('empty-calendar-state');
-                const savedDays = JSON.parse(localStorage.getItem('blog-days') || '[]');
-                const daysInDOM = document.querySelectorAll('.calendar-day').length;
+                const savedDays = document.querySelectorAll('.calendar-day').length;
                 
-                if (savedDays.length === 0 && daysInDOM === 0) {
+                if (savedDays === 0) {
                     // No days, show empty state
                     if (emptyState) emptyState.style.display = 'block';
                     if (calendarGrid) calendarGrid.style.display = 'none';
@@ -782,107 +774,86 @@
                 }
             }
             
-            // Function to load saved days from localStorage
-            function loadSavedDays() {
-                const savedDays = JSON.parse(localStorage.getItem('blog-days') || '[]');
-                
-                savedDays.forEach(day => {
-                    // Check if this day already exists
-                    if (!document.querySelector(`.calendar-day[data-day="${day.number}"]`)) {
-                        // Create the calendar day
-                        const newCalendarDay = document.createElement('div');
-                        newCalendarDay.className = 'calendar-day';
-                        newCalendarDay.setAttribute('data-day', day.number);
-                        newCalendarDay.innerHTML = `
-                            <div class="day-card">
-                                <div class="day-front">
-                                    <span class="day-number">${day.number}</span>
-                                    <span class="day-label">${day.label}</span>
-                                </div>
-                            </div>
+            // Function to load saved days from Firebase
+            async function loadSavedDays() {
+                try {
+                    // Import Firebase functions
+                    const { loadBlogsFromFirebase } = await import('./firebase-blog.js');
+                    
+                    // Get saved days from Firebase
+                    const days = await loadBlogsFromFirebase();
+                    
+                    // Check if there are any days
+                    if (Object.keys(days).length === 0) {
+                        return; // No days to load
+                    }
+                    
+                    // Get the calendar grid
+                    const calendarGrid = document.getElementById('calendar-grid');
+                    
+                    // Clear existing days first
+                    calendarGrid.innerHTML = '';
+                    
+                    // Sort the days by number
+                    const sortedDayNumbers = Object.keys(days).sort((a, b) => parseInt(a) - parseInt(b));
+                    
+                    // Create elements for each day
+                    sortedDayNumbers.forEach(dayNumber => {
+                        const day = days[dayNumber];
+                        
+                        const dayElement = document.createElement('div');
+                        dayElement.className = 'calendar-day';
+                        dayElement.setAttribute('data-day', dayNumber);
+                        dayElement.setAttribute('data-id', day.id); // Store Firebase document ID
+                        
+                        dayElement.innerHTML = `
+                            <span class="day-number">Day ${dayNumber}</span>
+                            <span class="day-label">${day.label}</span>
                         `;
                         
-                        // Add it to the calendar
-                        document.querySelector('.calendar-grid').appendChild(newCalendarDay);
-                        
-                        // Create the content
-                        const newDayContent = document.createElement('article');
-                        newDayContent.className = 'blog-post day-content';
-                        newDayContent.id = `day-${day.number}-content`;
-                        newDayContent.innerHTML = `
-                            <div class="post-meta">
-                                <span class="post-date">${day.date}</span>
-                                <span class="post-category">${day.category}</span>
-                                <span class="post-day">Dag ${day.number}</span>
-                            </div>
-                            <h2>${day.title}</h2>
-                            <div class="post-content">
-                                ${day.content}
-                            </div>
-                        `;
-                        
-                        // Add it to the content wrapper
-                        document.querySelector('.blog-content-wrapper').appendChild(newDayContent);
+                        calendarGrid.appendChild(dayElement);
                         
                         // Add click event
-                        newCalendarDay.addEventListener('click', () => {
-                            showDayContent(day.number);
+                        dayElement.addEventListener('click', () => {
+                            showDayContent(dayNumber);
                         });
-                    }
-                });
-                
-                // Check empty state after loading days
-                checkAndToggleEmptyState();
-            }
-            
-            // Connect the Clear All Days button to its function
-            document.getElementById('clear-all-days').addEventListener('click', clearAllDays);
-            
-            // Connect empty state admin button to open admin panel - with direct DOM access
-            const emptyStateAdminButton = document.getElementById('empty-state-admin-button');
-            if (emptyStateAdminButton) {
-                emptyStateAdminButton.addEventListener('click', function() {
-                    // Access elements directly by DOM ID to avoid scope issues
-                    const panel = document.getElementById('admin-panel');
-                    const passwordForm = document.getElementById('password-form');
-                    const dayCreator = document.getElementById('day-creator');
-                    const adminPasswordField = document.getElementById('admin-password');
+                    });
                     
-                    if (panel) panel.classList.remove('hidden');
-                    if (passwordForm) passwordForm.classList.remove('hidden');
-                    if (dayCreator) dayCreator.classList.add('hidden');
-                    if (adminPasswordField) adminPasswordField.focus();
-                });
-            }
-            
-            // Check empty state when clearing days
-            function updateEmptyStateAfterDelete() {
-                setTimeout(() => {
+                    // Update empty state
                     checkAndToggleEmptyState();
-                }, 100);
+                    
+                    // Set next day number for form
+                    setNextDayNumber();
+                } catch (error) {
+                    console.error('Error loading saved days:', error);
+                    alert('Error loading blog posts: ' + error.message);
+                }
             }
             
-            // Update clearAllDays function to check empty state
-            const originalClearAllDays = clearAllDays;
-            clearAllDays = function() {
-                originalClearAllDays();
-                updateEmptyStateAfterDelete();
-            };
-            
-            // Update deleteDay function to check empty state
-            const originalDeleteDay = deleteDay;
-            deleteDay = function(dayNumber) {
-                originalDeleteDay(dayNumber);
-                updateEmptyStateAfterDelete();
-            };
+            // Connect clear all days button to its function
+            const clearAllDaysButton = document.getElementById('clear-all-days');
+            if (clearAllDaysButton) {
+                clearAllDaysButton.addEventListener('click', clearAllDays);
+            }
             
             // Load any saved days when the page loads
-            loadSavedDays();
-            
-            // Initial check for empty state
-            checkAndToggleEmptyState();
-            }
-        });
-    </script>
+            document.addEventListener('DOMContentLoaded', async () => {
+                try {
+                    await loadSavedDays();
+                    // Initial check for empty state
+                    checkAndToggleEmptyState();
+                    
+                    // Add event listener for 'clear all days' button
+                    const clearAllDaysButton = document.getElementById('clear-all-days');
+                    if (clearAllDaysButton) {
+                        clearAllDaysButton.addEventListener('click', clearAllDays);
+                    }
+                } catch (error) {
+                    console.error('Error initializing blog:', error);
+                }
+            });
+        }
+    });
+</script>
 </body>
 </html>

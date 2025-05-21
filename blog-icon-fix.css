@@ -1,0 +1,51 @@
+/* Fix for duplicate trash icons */
+.day-actions button::before {
+    content: none !important; /* Remove the pseudo-element trash icon */
+}
+
+.day-list-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    margin-bottom: 0.5rem;
+    background-color: rgba(var(--accent-color-rgb), 0.05);
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.day-list-item:hover {
+    background-color: rgba(var(--accent-color-rgb), 0.1);
+}
+
+.day-info {
+    flex: 1;
+}
+
+.day-number {
+    font-weight: 600;
+    color: var(--accent-color);
+    margin-bottom: 0.25rem;
+}
+
+.day-title {
+    color: var(--text-color);
+}
+
+.delete-day-btn {
+    background-color: transparent;
+    color: #e74c3c;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.delete-day-btn:hover {
+    background-color: rgba(231, 76, 60, 0.15);
+}
+
+.delete-day-btn i {
+    font-size: 1rem;
+}
